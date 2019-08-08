@@ -13,6 +13,9 @@ const GrowthModel = function() {
 
     this.sampleRadius = topDistance => {
         return topDistance * 0.03;
-        return Math.sqrt(topDistance);
+    };
+
+    this.getFlexibility = () => {
+        return 0.2;
     };
 };
