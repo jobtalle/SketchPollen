@@ -5,6 +5,7 @@ const TIME_STEP_MAX = 0.2;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
+const growthModels = new GrowthModels();
 const plants = [];
 let plantTimer = 0;
 let lastDate = new Date();
@@ -16,6 +17,7 @@ const resize = () => {
 
 const spawnPlant = center => {
     plants.push(new Plant(
+        growthModels.get(),
         center ? canvas.width * 0.5 : Math.random() * canvas.width,
         canvas.height,
         canvas.height * PLANT_CEILING));
