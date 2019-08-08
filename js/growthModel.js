@@ -10,4 +10,9 @@ const GrowthModel = function() {
     this.makePhytomerLength = maxLength => {
         return (0.4 + Math.random() * 0.6) * maxLength;
     };
+
+    this.sampleRadius = topDistance => {
+        return topDistance * 0.03;
+        return Math.sqrt(topDistance);
+    };
 };
