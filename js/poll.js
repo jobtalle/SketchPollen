@@ -4,18 +4,9 @@ const Poll = function() {
     let radius = 0;
     let x = 0;
     let y = 0;
-    let claimed = false;
 
     this.getX = () => x;
     this.getY = () => y;
-
-    this.claim = () => {
-        claimed = true;
-    };
-
-    this.unclaim = () => {
-        claimed = false;
-    };
 
     this.setPosition = (newX, newY) => {
         x = newX;

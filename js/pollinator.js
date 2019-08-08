@@ -1,40 +1,66 @@
-const Slot = function(xOffset, yOffset) {
+const Slot = function(x, y, xOffset, yOffset) {
     let poll = null;
+
+    this.getX = () => x + xOffset;
+    this.getY = () => y + yOffset;
 
     this.add = p => {
         poll = p;
     };
 
+    this.hasPoll = () => {
+        return poll !== null;
+    };
+
+    this.update = (newX, newY) => {
+        x = newX;
+        y = newY;
+
+        if (poll)
+            poll.setPosition(x + xOffset, y + yOffset);
+    };
+
     this.draw = context => {
         context.strokeStyle = "blue";
         context.beginPath();
-        context.arc(xOffset, yOffset, 3, 0, Math.PI * 2);
+        context.arc(x + xOffset, y + yOffset, 3, 0, Math.PI * 2);
         context.stroke();
+
+        if (poll)
+            poll.draw(context);
     };
 };
 
 const Pollinator = function(x, y) {
-    const armLength = 48;
-    const handSpacing = 12;
+    const armLength = 55;
+    const handSpacing = 22;
     const handLeft = new Hand(x - handSpacing, y, armLength, 1);
     const handRight = new Hand(x + handSpacing, y, armLength, -1);
     const slots = [];
-    let pollen = 0;
     let target = null;
     let updateTimer = 0;
     let vx = 0;
     let vy = 0;
+    let leave = false;
 
     const makeSlots = () => {
         const slotCount = 8;
-        const radius = 28;
+        const radius = 20;
 
         for (let i = 0; i < slotCount; ++i) {
             const angle = Math.PI + (i / (slotCount - 1)) * Math.PI;
             slots.push(new Slot(
+                x,
+                y,
                 Math.cos(angle) * radius,
                 Math.sin(angle) * radius));
         }
+
+        for (let i = 0; i < 4; ++i)
+            handLeft.addSlot(slots[i]);
+
+        for (let i = 4; i < 8; ++i)
+            handRight.addSlot(slots[i]);
     };
 
     const pickTarget = plants => {
@@ -85,27 +111,44 @@ const Pollinator = function(x, y) {
         vx -= vx * Pollinator.DAMPING * timeStep;
         vy -= vy * Pollinator.DAMPING * timeStep;
 
+        let pollCount = 0;
+
+        for (const slot of slots) {
+            slot.update(x, y);
+
+            if (slot.hasPoll())
+                ++pollCount;
+        }
+
+        if (pollCount === slots.length) {
+            target = null;
+            leave = true;
+        }
+
         handLeft.update(timeStep, x - handSpacing, y, target);
         handRight.update(timeStep, x + handSpacing, y, target);
 
-        if ((updateTimer -= timeStep) < 0) {
+        if (leave) {
+            vy -= Pollinator.ACCELERATION_Y * timeStep;
+
+            if (y < -Pollinator.DESPAWN_CLEARING)
+                return true;
+        }
+        else if ((updateTimer -= timeStep) < 0) {
             pickTarget(plants);
 
             updateTimer = Pollinator.UPDATE_TIME_MIN + (Pollinator.UPDATE_TIME_MAX - Pollinator.UPDATE_TIME_MIN) * Math.random();
         }
+
+        return false;
     };
 
     this.draw = context => {
         handLeft.draw(context);
         handRight.draw(context);
 
-        context.save();
-        context.translate(x, y);
-
         for (const slot of slots)
             slot.draw(context);
-
-        context.restore();
     };
 
     makeSlots();
@@ -120,3 +163,4 @@ Pollinator.VELOCITY_Y_MAX = 500;
 Pollinator.VELOCITY_X_MAX = 300;
 Pollinator.GRAVITY = 120;
 Pollinator.DAMPING = 0.5;
+Pollinator.DESPAWN_CLEARING = 200;

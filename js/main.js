@@ -1,5 +1,6 @@
 const PLANT_TIME_MIN = 1;
 const PLANT_TIME_MAX = 4;
+const PLANTS_PER_PIXEL = 0.05;
 const POLLINATOR_TIME_MIN = 1;
 const POLLINATOR_TIME_MAX = 4;
 const POLLINATOR_SPAWN_OFFSET = 300;
@@ -21,6 +22,9 @@ const resize = () => {
 };
 
 const spawnPlant = center => {
+    if (plants.length > PLANTS_PER_PIXEL * canvas.width)
+        return;
+
     plants.push(new Plant(
         growthModels.get(),
         center ? canvas.width * 0.5 : Math.random() * canvas.width,
