@@ -1,8 +1,11 @@
 const Plant = function(model, x, floor, ceiling) {
     const growthSpeed = Plant.GROWTH_SPEED_MIN + (Plant.GROWTH_SPEED_MAX - Plant.GROWTH_SPEED_MIN) * Math.random();
-    const stalks = [new Stalk(model, 0, 0)];
-    const phytomers = [new Phytomer(model, stalks[0], floor - ceiling, null)];
+    const stalk = new Stalk(model, 0, 0, true);
+    const phytomers = [new Phytomer(model, stalk, floor - ceiling, null)];
+    const flowers = [];
     let lifetime = 0;
+
+    this.getFlowers = () => flowers;
 
     this.draw = context => {
         context.save();
@@ -12,8 +15,7 @@ const Plant = function(model, x, floor, ceiling) {
         context.fillStyle = "#65bf71";
         context.strokeStyle = "black";
 
-        for (const stalk of stalks)
-            stalk.draw(context, lifetime);
+        stalk.draw(context);
 
         context.restore();
     };
@@ -21,8 +23,10 @@ const Plant = function(model, x, floor, ceiling) {
     this.update = timeStep => {
         lifetime += timeStep;
 
+        stalk.update(timeStep, lifetime);
+
         for (let i = phytomers.length; i-- > 0;)
-            if (phytomers[i].update(timeStep, growthSpeed, phytomers))
+            if (phytomers[i].update(timeStep, growthSpeed, phytomers, flowers))
                 phytomers.splice(i, 1);
 
         return false;

@@ -1,6 +1,9 @@
-const Stalk = function(model, xRoot, yRoot) {
+const Stalk = function(model, xRoot, yRoot, isRoot) {
     const windNoise = cubicNoiseConfig(Math.random());
     const children = [];
+    let angle;
+    let flower = null;
+    let xTip, yTip;
 
     const Point = function(x, y) {
         this.x = x;
@@ -15,7 +18,8 @@ const Stalk = function(model, xRoot, yRoot) {
         const newStalk = new Stalk(
             model,
             points[points.length - 2].x,
-            points[points.length - 2].y);
+            points[points.length - 2].y,
+            false);
         const newPhytomer = new Phytomer(
             model,
             newStalk,
@@ -26,8 +30,24 @@ const Stalk = function(model, xRoot, yRoot) {
         children.push(newStalk);
     };
 
+    const calculateTip = context => {
+        const transform = context.getTransform();
+
+        xTip = transform.a * points[points.length - 1].x + transform.c * points[points.length - 1].y + transform.e;
+        yTip = transform.b * points[points.length - 1].x + transform.d * points[points.length - 1].y + transform.f;
+
+        if (flower)
+            flower.setPosition(xTip, yTip);
+    };
+
     this.getX = () => xRoot;
     this.getY = () => yRoot;
+
+    this.createFlower = flowers => {
+        flower = new Flower(model.getFlowerModel(), xTip, yTip);
+
+        flowers.push(flower);
+    };
 
     this.extrude = (x, y, maxLength, direction, phytomers) => {
         x -= xRoot;
@@ -55,17 +75,22 @@ const Stalk = function(model, xRoot, yRoot) {
         }
     };
 
-    this.update = timeStep => {
+    this.update = (timeStep, lifetime) => {
+        for (const child of children)
+            child.update(timeStep, lifetime);
 
+        angle = (cubicNoiseSample1(windNoise, lifetime * Stalk.WIND_SCALE) - 0.5) * model.getFlexibility();
     };
 
-    this.draw = (context, lifetime) => {
+    this.draw = context => {
         context.save();
         context.translate(xRoot, yRoot);
-        context.rotate((cubicNoiseSample1(windNoise, lifetime * Stalk.WIND_SCALE) - 0.5) * model.getFlexibility());
+        context.rotate(angle);
+
+        calculateTip(context);
 
         for (const child of children)
-            child.draw(context, lifetime);
+            child.draw(context);
 
         const dxTip = points[points.length - 1].x - points[points.length - 2].x;
         const dyTip = points[points.length - 1].y - points[points.length - 2].y;
@@ -98,5 +123,5 @@ const Stalk = function(model, xRoot, yRoot) {
     };
 };
 
-Stalk.RESOLUTION = 48;
-Stalk.WIND_SCALE = 2;
+Stalk.RESOLUTION = 32;
+Stalk.WIND_SCALE = 4;

@@ -1,6 +1,6 @@
 const PLANT_TIME_MIN = 1;
 const PLANT_TIME_MAX = 4;
-const PLANT_CEILING = 0.35;
+const PLANT_CEILING = 0.15;
 const TIME_STEP_MAX = 0.2;
 
 const wrapper = document.getElementById("wrapper");
@@ -41,8 +41,12 @@ const update = timeStep => {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (const plant of plants)
+    for (const plant of plants) {
         plant.draw(context);
+
+        for (const flower of plant.getFlowers())
+            flower.draw(context);
+    }
 };
 
 const loopFunction = () => {

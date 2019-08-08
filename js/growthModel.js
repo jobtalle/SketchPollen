@@ -1,4 +1,4 @@
-const GrowthModel = function() {
+const GrowthModel = function(flowerModel) {
     this.getBranchChance = (length, maxLength) => {
         return 0.2;
     };
@@ -16,6 +16,10 @@ const GrowthModel = function() {
     };
 
     this.getFlexibility = () => {
-        return 0.07;
+        return 0.08;
+    };
+
+    this.getFlowerModel = () => {
+        return flowerModel;
     };
 };

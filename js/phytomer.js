@@ -11,11 +11,14 @@ const Phytomer = function(model, stalk, maxLength, directionOffset) {
         direction = (cubicNoiseSample1(noise, length * Phytomer.NOISE_SCALE) - 0.5) * Math.PI;
     };
 
-    this.update = (timeStep, growthSpeed, phytomers) => {
+    this.update = (timeStep, growthSpeed, phytomers, flowers) => {
         const delta = growthSpeed * timeStep;
 
-        if ((length += delta) > maxLength)
+        if ((length += delta) > maxLength) {
+            stalk.createFlower(flowers);
+
             return true;
+        }
 
         x += Math.cos(direction + directionOffset) * delta;
         y += Math.sin(direction + directionOffset) * delta;
