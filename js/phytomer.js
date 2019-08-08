@@ -15,7 +15,7 @@ const Phytomer = function(model, stalk, maxLength, directionOffset) {
         const delta = growthSpeed * timeStep;
 
         if ((length += delta) > maxLength) {
-            stalk.createFlower(flowers);
+            stalk.createFlower(flowers, direction);
 
             return true;
         }

@@ -43,8 +43,8 @@ const Stalk = function(model, xRoot, yRoot, isRoot) {
     this.getX = () => xRoot;
     this.getY = () => yRoot;
 
-    this.createFlower = flowers => {
-        flower = new Flower(model.getFlowerModel(), xTip, yTip);
+    this.createFlower = (flowers, direction) => {
+        flower = new Flower(model.getFlowerModel(), xTip, yTip, direction);
 
         flowers.push(flower);
     };
@@ -78,6 +78,9 @@ const Stalk = function(model, xRoot, yRoot, isRoot) {
     this.update = (timeStep, lifetime) => {
         for (const child of children)
             child.update(timeStep, lifetime);
+
+        if (flower)
+            flower.update(timeStep);
 
         angle = (cubicNoiseSample1(windNoise, lifetime * Stalk.WIND_SCALE) - 0.5) * model.getFlexibility();
     };
