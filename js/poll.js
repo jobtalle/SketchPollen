@@ -1,4 +1,5 @@
 const Poll = function() {
+    const targetRadius = Poll.RADIUS_MIN + (Poll.RADIUS_MAX - Poll.RADIUS_MIN) * Math.random();
     let lifetime = 0;
     let radius = 0;
     let x = 0;
@@ -12,10 +13,10 @@ const Poll = function() {
     this.grow = time => {
         lifetime += time;
 
-        radius = Math.min(1, lifetime / Poll.GROW_TIME) * Poll.RADIUS;
+        radius = Math.min(1, lifetime / Poll.GROW_TIME) * targetRadius;
     };
 
-    this.isGrown = () => radius === Poll.RADIUS;
+    this.isGrown = () => radius === targetRadius;
 
     this.draw = context => {
         context.fillStyle = "white";
@@ -27,5 +28,6 @@ const Poll = function() {
     };
 };
 
-Poll.RADIUS = 5;
+Poll.RADIUS_MIN = 4;
+Poll.RADIUS_MAX = 6;
 Poll.GROW_TIME = 8;

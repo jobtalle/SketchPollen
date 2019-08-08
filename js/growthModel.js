@@ -16,7 +16,7 @@ const GrowthModel = function(flowerModel) {
     };
 
     this.getFlexibility = () => {
-        return 0.08;
+        return 0.05;
     };
 
     this.getFlowerModel = () => {

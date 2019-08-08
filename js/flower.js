@@ -45,10 +45,9 @@ const Flower = function(model, x, y, direction) {
         if (grown !== 1) {
             grown = Math.min(1, lifetime / model.getGrowTime());
         }
-        else {
-            for (const poll of pollen)
-                poll.grow(timeStep);
-        }
+
+        for (const poll of pollen)
+            poll.grow(timeStep);
     };
 
     this.draw = context => {
