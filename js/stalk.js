@@ -1,4 +1,4 @@
-const Stalk = function(model, xRoot, yRoot, direction, isRoot) {
+const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
     const windNoise = cubicNoiseConfig(Math.random());
     const children = [];
     let angle;
@@ -8,8 +8,8 @@ const Stalk = function(model, xRoot, yRoot, direction, isRoot) {
     const Point = function(x, y) {
         this.x = x;
         this.y = y;
-        this.nx = Math.cos(direction);
-        this.ny = Math.sin(direction);
+        this.nx = Math.cos(direction + Math.PI * 0.5);
+        this.ny = Math.sin(direction + Math.PI * 0.5);
     };
 
     const points = [new Point(0, 0), new Point(0, 0)];
@@ -20,6 +20,7 @@ const Stalk = function(model, xRoot, yRoot, direction, isRoot) {
             points[points.length - 2].x,
             points[points.length - 2].y,
             direction,
+            nChild + 1,
             false);
         const newPhytomer = new Phytomer(
             model,
@@ -86,7 +87,7 @@ const Stalk = function(model, xRoot, yRoot, direction, isRoot) {
         if (flower)
             flower.update(timeStep);
 
-        angle = (cubicNoiseSample1(windNoise, lifetime * Stalk.WIND_SCALE) - 0.5) * model.getFlexibility();
+        angle = (cubicNoiseSample1(windNoise, lifetime * Stalk.WIND_SCALE) - 0.5) * model.getFlexibility() * nChild;
     };
 
     this.draw = context => {
@@ -131,4 +132,4 @@ const Stalk = function(model, xRoot, yRoot, direction, isRoot) {
 };
 
 Stalk.RESOLUTION = 32;
-Stalk.WIND_SCALE = 4;
+Stalk.WIND_SCALE = 3;

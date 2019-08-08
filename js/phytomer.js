@@ -8,7 +8,7 @@ const Phytomer = function(model, stalk, maxLength, directionOffset) {
     maxLength = Math.max(model.makePhytomerLength(maxLength), Stalk.RESOLUTION);
 
     const sampleDirection = () => {
-        direction = (cubicNoiseSample1(noise, length * Phytomer.NOISE_SCALE) - 0.5) * Math.PI;
+        direction = (cubicNoiseSample1(noise, length * model.getNoiseScale()) - 0.5) * Math.PI;
     };
 
     this.update = (timeStep, growthSpeed, phytomers, flowers) => {
@@ -40,5 +40,3 @@ const Phytomer = function(model, stalk, maxLength, directionOffset) {
     if (directionOffset)
         directionOffset = directionOffset - direction;
 };
-
-Phytomer.NOISE_SCALE = 0.01;

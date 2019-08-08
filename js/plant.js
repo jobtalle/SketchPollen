@@ -1,6 +1,6 @@
 const Plant = function(model, x, floor, ceiling) {
     const growthSpeed = Plant.GROWTH_SPEED_MIN + (Plant.GROWTH_SPEED_MAX - Plant.GROWTH_SPEED_MIN) * Math.random();
-    const stalk = new Stalk(model, 0, 0, Math.PI * 0.5, true);
+    const stalk = new Stalk(model, 0, 0, 0, 1, true);
     const phytomers = [new Phytomer(model, stalk, floor - ceiling, null)];
     const flowers = [];
     let lifetime = 0;
@@ -12,7 +12,7 @@ const Plant = function(model, x, floor, ceiling) {
         context.translate(x, floor);
         context.rotate(Math.PI * 1.5);
 
-        context.fillStyle = "#65bf71";
+        context.fillStyle = "#95c4a2";
         context.strokeStyle = "black";
 
         stalk.draw(context);

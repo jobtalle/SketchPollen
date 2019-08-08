@@ -7,6 +7,10 @@ const GrowthModel = function(flowerModel) {
         return 0.7;
     };
 
+    this.getNoiseScale = () => {
+        return 0.012;
+    };
+
     this.makePhytomerLength = maxLength => {
         return (0.4 + Math.random() * 0.6) * maxLength;
     };

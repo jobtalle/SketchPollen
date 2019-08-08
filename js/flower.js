@@ -36,6 +36,29 @@ const Flower = function(model, x, y, direction) {
         }
     };
 
+    this.findPoll = (x, y, reach, yMin) => {
+        const reachSquared = reach * reach;
+        let shortest = null;
+        let candidate = null;
+
+        for (const poll of pollen) {
+            if (poll.getY() < yMin)
+                continue;
+
+            const dx = poll.getX() - x;
+            const dy = poll.getY() - y;
+            const d = dx * dx + dy * dy;
+
+            if (d < reachSquared && (shortest === null || d < shortest)) {
+                shortest = d;
+
+                candidate = poll;
+            }
+        }
+
+        return candidate;
+    };
+
     this.setPosition = (newX, newY) => {
         x = newX;
         y = newY;
@@ -58,7 +81,10 @@ const Flower = function(model, x, y, direction) {
         wiggle = (cubicNoiseSample1(noise, lifetime * model.getWiggleSpeed()) - 0.5) * model.getWiggleAmplitude();
 
         if (grown !== 1) {
-            grown = Math.min(1, lifetime / model.getGrowTime());
+            if (lifetime > model.getGrowTime())
+                grown = 1;
+            else
+                grown = Math.min(1, 0.5 + 0.5 * Math.cos((lifetime / model.getGrowTime() + 1) * Math.PI));
         }
 
         for (const poll of pollen)
