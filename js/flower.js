@@ -26,7 +26,7 @@ const Flower = function(model, x, y, direction) {
         claimed = false;
     };
 
-    this.eatPoll = poll => {
+    this.grabPoll = poll => {
         for (let i = 0; i < pollen.length; ++i) if (pollen[i] === poll) {
             pollen[i] = null;
 
@@ -41,7 +41,7 @@ const Flower = function(model, x, y, direction) {
         let shortest = null;
         let candidate = null;
 
-        for (const poll of pollen) {
+        for (const poll of pollen) if (poll) {
             if (poll.getY() < yMin)
                 continue;
 
@@ -87,7 +87,7 @@ const Flower = function(model, x, y, direction) {
                 grown = Math.min(1, 0.5 + 0.5 * Math.cos((lifetime / model.getGrowTime() + 1) * Math.PI));
         }
 
-        for (const poll of pollen)
+        for (const poll of pollen) if (poll)
             poll.grow(timeStep);
     };
 
@@ -112,7 +112,7 @@ const Flower = function(model, x, y, direction) {
 
         context.restore();
 
-        for (const poll of pollen)
+        for (const poll of pollen) if (poll)
             poll.draw(context);
     };
 
