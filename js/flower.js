@@ -4,10 +4,21 @@ const Flower = function(model, x, y, direction) {
     let grown = 0;
     let lifetime = 0;
     let wiggle = 0;
+    let pollCount = model.getPistilCount();
 
     const makePollen = () => {
         for (let i = 0; i < pollen.length; ++i)
             pollen[i] = new Poll();
+    };
+
+    this.eatPoll = poll => {
+        for (let i = 0; i < pollen.length; ++i) if (pollen[i] === poll) {
+            pollen[i] = null;
+
+            --pollCount;
+
+            break;
+        }
     };
 
     this.setPosition = (newX, newY) => {
@@ -15,6 +26,9 @@ const Flower = function(model, x, y, direction) {
         y = newY;
 
         for (let i = 0; i < pollen.length; ++i) {
+            if (!pollen[i])
+                continue;
+
             const length = model.getPistilLengths()[i] * grown;
             const angle = model.getPistilAngles()[i] + direction + wiggle;
 

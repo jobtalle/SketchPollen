@@ -1,4 +1,4 @@
-const Stalk = function(model, xRoot, yRoot, isRoot) {
+const Stalk = function(model, xRoot, yRoot, direction, isRoot) {
     const windNoise = cubicNoiseConfig(Math.random());
     const children = [];
     let angle;
@@ -8,8 +8,8 @@ const Stalk = function(model, xRoot, yRoot, isRoot) {
     const Point = function(x, y) {
         this.x = x;
         this.y = y;
-        this.nx = 0;
-        this.ny = 1;
+        this.nx = Math.cos(direction);
+        this.ny = Math.sin(direction);
     };
 
     const points = [new Point(0, 0), new Point(0, 0)];
@@ -19,6 +19,7 @@ const Stalk = function(model, xRoot, yRoot, isRoot) {
             model,
             points[points.length - 2].x,
             points[points.length - 2].y,
+            direction,
             false);
         const newPhytomer = new Phytomer(
             model,
@@ -44,6 +45,9 @@ const Stalk = function(model, xRoot, yRoot, isRoot) {
     this.getY = () => yRoot;
 
     this.createFlower = (flowers, direction) => {
+        if (!isRoot)
+            return;
+
         flower = new Flower(model.getFlowerModel(), xTip, yTip, direction);
 
         flowers.push(flower);

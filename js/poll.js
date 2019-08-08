@@ -15,6 +15,8 @@ const Poll = function() {
         radius = Math.min(1, lifetime / Poll.GROW_TIME) * Poll.RADIUS;
     };
 
+    this.isGrown = () => radius === Poll.RADIUS;
+
     this.draw = context => {
         context.fillStyle = "white";
         context.strokeStyle = "black";
