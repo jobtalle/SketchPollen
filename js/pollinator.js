@@ -32,8 +32,8 @@ const Slot = function(x, y, xOffset, yOffset) {
 };
 
 const Pollinator = function(x, y) {
-    const armLength = 55;
-    const handSpacing = 22;
+    const armLength = 70;
+    const handSpacing = 25;
     const handLeft = new Hand(x - handSpacing, y, armLength, 1);
     const handRight = new Hand(x + handSpacing, y, armLength, -1);
     const slots = [];
@@ -53,7 +53,7 @@ const Pollinator = function(x, y) {
                 x,
                 y,
                 Math.cos(angle) * radius,
-                Math.sin(angle) * radius));
+                -Math.sin(angle) * radius + Hand.DOWN_OFFSET));
         }
 
         for (let i = 0; i < 4; ++i)
@@ -64,18 +64,19 @@ const Pollinator = function(x, y) {
     };
 
     const pickTarget = plants => {
-        if (target) {
-            if (target.getPollCount() >= Pollinator.TARGET_POLL_COUNT_MIN)
+        if (target)
+            if (target.getPollCount() > 0)
                 return;
-        }
 
         const candidates = [];
 
         for (const plant of plants) for (const flower of plant.getFlowers())
-            if (flower.isGrown() && !flower.isClaimed() && flower.getPollCount() > Pollinator.TARGET_POLL_COUNT_MIN)
+            if (flower.isGrown() && !flower.isClaimed() && flower.getPollCount() > 0)
                 candidates.push(flower);
 
         if (candidates.length > 0) {
+            if (target)
+                target.unclaim();
             target = candidates[Math.floor(Math.random() * candidates.length)];
             target.claim();
         }
@@ -83,7 +84,7 @@ const Pollinator = function(x, y) {
 
     const approachTarget = timeStep => {
         const dx = target.getX() - x;
-        const dy = target.getY() - y - Hand.DOWN_OFFSET;
+        const dy = target.getY() - y - Hand.DOWN_OFFSET - 20;
 
         if (dx > 0)
             vx += Pollinator.ACCELERATION_X * timeStep;
@@ -120,7 +121,10 @@ const Pollinator = function(x, y) {
                 ++pollCount;
         }
 
-        if (pollCount === slots.length) {
+        if (!leave && pollCount === slots.length) {
+            if (target)
+                target.unclaim();
+
             target = null;
             leave = true;
         }
@@ -154,7 +158,6 @@ const Pollinator = function(x, y) {
     makeSlots();
 };
 
-Pollinator.TARGET_POLL_COUNT_MIN = 3;
 Pollinator.UPDATE_TIME_MIN = 3;
 Pollinator.UPDATE_TIME_MAX = 10;
 Pollinator.ACCELERATION_X = 280;

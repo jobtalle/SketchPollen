@@ -10,6 +10,7 @@ const Hand = function(x, y, length, sign) {
 
     const grab = flower => {
         flower.grabPoll(poll);
+        poll.grab();
 
         grabbed = poll;
         poll = null;
@@ -64,16 +65,22 @@ const Hand = function(x, y, length, sign) {
     };
 
     this.update = (timeStep, newX, newY, flower) => {
+        const mx = newX - x;
+        const my = newY - y;
+
         x = newX;
         y = newY;
+        handX += mx * Hand.DAMPING;
+        handY += my * Hand.DAMPING;
 
         const dx = x - handX;
         const dy = y - handY;
         const dist = Math.sqrt(dx * dx + dy * dy);
+        const maxLength = length * Hand.MAX_EXTENSION;
 
-        if (dist > length) {
-            handX += (dx / dist) * (dist - length);
-            handY += (dy / dist) * (dist - length);
+        if (dist > maxLength) {
+            handX += (dx / dist) * (dist - maxLength);
+            handY += (dy / dist) * (dist - maxLength);
         }
 
         if (restoring) {
@@ -87,7 +94,7 @@ const Hand = function(x, y, length, sign) {
                 grabbed.setPosition(handX, handY);
         }
         else if (poll) {
-            if (poll.getY() < y + Hand.DOWN_OFFSET)
+            if (poll.getY() < y + Hand.DOWN_OFFSET || poll.isGrabbed())
                 poll = null;
 
             if (poll) {
@@ -100,19 +107,17 @@ const Hand = function(x, y, length, sign) {
                 else
                     reach(timeStep, pollFlower);
             }
-
-            limitY();
         }
         else {
             if (slots.length > 0 && flower !== null) {
-                poll = flower.findPoll(x, y, length, y + Hand.DOWN_OFFSET);
+                poll = flower.findPoll(x, y, length * Hand.MAX_EXTENSION, y + Hand.DOWN_OFFSET);
                 pollFlower = flower;
             }
 
             handY += Hand.DOWN_SPEED * timeStep;
-
-            limitY();
         }
+
+        limitY();
     };
 
     this.draw = context => {
@@ -140,19 +145,13 @@ const Hand = function(x, y, length, sign) {
 
         if (grabbed)
             grabbed.draw(context);
-
-        if (poll) {
-            context.strokeStyle = "red";
-            context.beginPath();
-            context.moveTo(handX, handY);
-            context.lineTo(poll.getX(), poll.getY());
-            context.stroke();
-        }
     };
 };
 
 Hand.DOWN_SPEED = 50;
-Hand.DOWN_OFFSET = 16;
+Hand.DOWN_OFFSET = 12;
 Hand.REACH_SPEED = 60;
 Hand.STORE_SPEED = 50;
-Hand.GRAB_THRESHOLD = 3;
+Hand.GRAB_THRESHOLD = 1;
+Hand.DAMPING = 0.9;
+Hand.MAX_EXTENSION = 0.75;

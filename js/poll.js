@@ -4,9 +4,15 @@ const Poll = function() {
     let radius = 0;
     let x = 0;
     let y = 0;
+    let grabbed = false;
 
     this.getX = () => x;
     this.getY = () => y;
+    this.isGrabbed = () => grabbed;
+
+    this.grab = () => {
+        grabbed = true;
+    };
 
     this.setPosition = (newX, newY) => {
         x = newX;

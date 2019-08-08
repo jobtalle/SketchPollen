@@ -1,6 +1,6 @@
 const PLANT_TIME_MIN = 1;
 const PLANT_TIME_MAX = 4;
-const PLANTS_PER_PIXEL = 0.05;
+const PLANTS_PER_PIXEL = 0.01;
 const POLLINATOR_TIME_MIN = 1;
 const POLLINATOR_TIME_MAX = 4;
 const POLLINATOR_SPAWN_OFFSET = 300;
@@ -68,15 +68,15 @@ const update = timeStep => {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
 
+    for (const pollinator of pollinators)
+        pollinator.draw(context);
+
     for (const plant of plants) {
         plant.draw(context);
 
         for (const flower of plant.getFlowers())
             flower.draw(context);
     }
-
-    for (const pollinator of pollinators)
-        pollinator.draw(context);
 };
 
 const loopFunction = () => {
