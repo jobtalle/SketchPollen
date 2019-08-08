@@ -30,18 +30,21 @@ const Pollinator = function(x, y) {
         const dy = target.getY() - y;
 
         if (dx > 0)
-            vx += Pollinator.ACCELERATION * timeStep;
+            vx += Pollinator.ACCELERATION_X * timeStep;
         else
-            vx -= Pollinator.ACCELERATION * timeStep;
+            vx -= Pollinator.ACCELERATION_X * timeStep;
 
         if (dy > 0)
-            vy += Pollinator.ACCELERATION * timeStep;
+            vy += Pollinator.ACCELERATION_Y * timeStep;
         else
-            vy -= Pollinator.ACCELERATION * timeStep;
+            vy -= Pollinator.ACCELERATION_Y * timeStep;
     };
 
     this.update = (timeStep, plants) => {
-        vy += Pollinator.GRAVITY * timeStep;
+        if (target)
+            approachTarget(timeStep);
+
+        vy = Math.min(vy + Pollinator.GRAVITY * timeStep, Pollinator.ACCELERATION_Y_MAX);
         x += vx * timeStep;
         y += vy * timeStep;
 
@@ -53,9 +56,6 @@ const Pollinator = function(x, y) {
 
             updateTimer = Pollinator.UPDATE_TIME_MIN + (Pollinator.UPDATE_TIME_MAX - Pollinator.UPDATE_TIME_MIN) * Math.random();
         }
-
-        if (target)
-            approachTarget(timeStep);
     };
 
     this.draw = context => {
@@ -79,6 +79,8 @@ Pollinator.ARM_LENGTH_MAX = 32;
 Pollinator.TARGET_POLL_COUNT_MIN = 3;
 Pollinator.UPDATE_TIME_MIN = 3;
 Pollinator.UPDATE_TIME_MAX = 10;
-Pollinator.ACCELERATION = 48;
+Pollinator.ACCELERATION_X = 32;
+Pollinator.ACCELERATION_Y = 80;
+Pollinator.ACCELERATION_Y_MAX = 100;
 Pollinator.GRAVITY = 4;
 Pollinator.DAMPING = 0.3;
