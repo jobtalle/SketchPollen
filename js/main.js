@@ -1,6 +1,6 @@
 const PLANT_TIME_MIN = 1;
 const PLANT_TIME_MAX = 4;
-const PLANT_CEILING = 0.5;
+const PLANT_CEILING = 0.35;
 const TIME_STEP_MAX = 0.2;
 
 const wrapper = document.getElementById("wrapper");

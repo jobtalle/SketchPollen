@@ -1,6 +1,10 @@
 const GrowthModel = function() {
     this.getBranchChance = (length, maxLength) => {
-        return 0.1;
+        return 0.2;
+    };
+
+    this.getBranchLengthScale = () => {
+        return 0.7;
     };
 
     this.makePhytomerLength = maxLength => {
