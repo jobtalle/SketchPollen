@@ -1,17 +1,19 @@
 const Plant = function(model, x, floor, ceiling) {
-    const windNoise = cubicNoiseConfig(Math.random());
     const growthSpeed = Plant.GROWTH_SPEED_MIN + (Plant.GROWTH_SPEED_MAX - Plant.GROWTH_SPEED_MIN) * Math.random();
-    const stalks = [new Stalk(model, 0, 0, true)];
+    const stalks = [new Stalk(model, 0, 0)];
     const phytomers = [new Phytomer(model, stalks[0], floor - ceiling, null)];
     let lifetime = 0;
 
     this.draw = context => {
         context.save();
         context.translate(x, floor);
-        context.rotate(Math.PI * 1.5 + (cubicNoiseSample1(windNoise, lifetime * Plant.WIND_SCALE) - 0.5) * model.getFlexibility());
+        context.rotate(Math.PI * 1.5);
+
+        context.fillStyle = "#65bf71";
+        context.strokeStyle = "black";
 
         for (const stalk of stalks)
-            stalk.draw(context);
+            stalk.draw(context, lifetime);
 
         context.restore();
     };
@@ -29,4 +31,3 @@ const Plant = function(model, x, floor, ceiling) {
 
 Plant.GROWTH_SPEED_MIN = 16;
 Plant.GROWTH_SPEED_MAX = 32;
-Plant.WIND_SCALE = 2;

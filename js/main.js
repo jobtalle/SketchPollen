@@ -19,7 +19,7 @@ const spawnPlant = center => {
     plants.push(new Plant(
         growthModels.get(),
         center ? canvas.width * 0.5 : Math.random() * canvas.width,
-        canvas.height,
+        canvas.height - 64,
         canvas.height * PLANT_CEILING));
 };
 

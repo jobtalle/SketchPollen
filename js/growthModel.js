@@ -16,6 +16,6 @@ const GrowthModel = function() {
     };
 
     this.getFlexibility = () => {
-        return 0.2;
+        return 0.07;
     };
 };

@@ -1,4 +1,5 @@
-const Stalk = function(model, x, y, root) {
+const Stalk = function(model, xRoot, yRoot) {
+    const windNoise = cubicNoiseConfig(Math.random());
     const children = [];
 
     const Point = function(x, y) {
@@ -8,14 +9,13 @@ const Stalk = function(model, x, y, root) {
         this.ny = 1;
     };
 
-    const points = [new Point(x, y), new Point(x, y)];
+    const points = [new Point(0, 0), new Point(0, 0)];
 
     const branch = (phytomers, maxLength, direction) => {
         const newStalk = new Stalk(
             model,
             points[points.length - 2].x,
-            points[points.length - 2].y,
-            false);
+            points[points.length - 2].y);
         const newPhytomer = new Phytomer(
             model,
             newStalk,
@@ -26,10 +26,13 @@ const Stalk = function(model, x, y, root) {
         children.push(newStalk);
     };
 
-    this.getX = () => x;
-    this.getY = () => y;
+    this.getX = () => xRoot;
+    this.getY = () => yRoot;
 
     this.extrude = (x, y, maxLength, direction, phytomers) => {
+        x -= xRoot;
+        y -= yRoot;
+
         points[points.length - 1].x = x;
         points[points.length - 1].y = y;
 
@@ -56,12 +59,13 @@ const Stalk = function(model, x, y, root) {
 
     };
 
-    this.draw = context => {
-        context.fillStyle = "#65bf71";
-        context.strokeStyle = "black";
+    this.draw = (context, lifetime) => {
+        context.save();
+        context.translate(xRoot, yRoot);
+        context.rotate((cubicNoiseSample1(windNoise, lifetime * Stalk.WIND_SCALE) - 0.5) * model.getFlexibility());
 
         for (const child of children)
-            child.draw(context);
+            child.draw(context, lifetime);
 
         const dxTip = points[points.length - 1].x - points[points.length - 2].x;
         const dyTip = points[points.length - 1].y - points[points.length - 2].y;
@@ -79,9 +83,6 @@ const Stalk = function(model, x, y, root) {
                 points[i].y - points[i].ny * radius);
         }
 
-        if (root)
-            context.arc(x, y, radius, Math.PI * -0.5, Math.PI * 0.5, true);
-
         for (let i = 0; i < points.length - 1; ++i) {
             radius = model.sampleRadius(tipLength + (points.length - 2 - i) * Stalk.RESOLUTION);
 
@@ -93,7 +94,9 @@ const Stalk = function(model, x, y, root) {
         context.closePath();
         context.fill();
         context.stroke();
+        context.restore();
     };
 };
 
-Stalk.RESOLUTION = 32;
+Stalk.RESOLUTION = 48;
+Stalk.WIND_SCALE = 2;
