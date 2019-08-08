@@ -33,7 +33,7 @@ const spawnPlant = center => {
 };
 
 const spawnPollinator = () => {
-    for (const plant of plants) for (const flower of plant.getFlowers()) if (flower.isGrown() && !flower.isClaimed()) {
+    for (const plant of plants) for (const flower of plant.getFlowers()) if (flower.isGrown() && !flower.isClaimed() && flower.getPollCount() > 0) {
         pollinators.push(new Pollinator(canvas.width * Math.random(), -POLLINATOR_SPAWN_OFFSET));
 
         return;
