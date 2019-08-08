@@ -13,12 +13,15 @@ const Pollinator = function(x, y) {
                 return;
         }
 
-        for (const plant of plants) for (const flower of plant.getFlowers()) {
-            if (flower.isGrown() && flower.getPollCount() > Pollinator.TARGET_POLL_COUNT_MIN) {
-                target = flower;
+        const candidates = [];
 
-                break;
-            }
+        for (const plant of plants) for (const flower of plant.getFlowers())
+            if (flower.isGrown() && !flower.isClaimed() && flower.getPollCount() > Pollinator.TARGET_POLL_COUNT_MIN)
+                candidates.push(flower);
+
+        if (candidates.length > 0) {
+            target = candidates[Math.floor(Math.random() * candidates.length)];
+            target.claim();
         }
     };
 
@@ -41,6 +44,9 @@ const Pollinator = function(x, y) {
         vy += Pollinator.GRAVITY * timeStep;
         x += vx * timeStep;
         y += vy * timeStep;
+
+        vx -= vx * Pollinator.DAMPING * timeStep;
+        vy -= vy * Pollinator.DAMPING * timeStep;
 
         if ((updateTimer -= timeStep) < 0) {
             pickTarget(plants);
@@ -73,6 +79,6 @@ Pollinator.ARM_LENGTH_MAX = 32;
 Pollinator.TARGET_POLL_COUNT_MIN = 3;
 Pollinator.UPDATE_TIME_MIN = 3;
 Pollinator.UPDATE_TIME_MAX = 10;
-Pollinator.ACCELERATION = 32;
+Pollinator.ACCELERATION = 48;
 Pollinator.GRAVITY = 4;
-Pollinator.COUNTER_GRAVITY = 6;
+Pollinator.DAMPING = 0.3;
