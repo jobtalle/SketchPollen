@@ -11,6 +11,11 @@ const Flower = function(model, x, y, direction) {
             pollen[i] = new Poll();
     };
 
+    this.getPollCount = () => pollCount;
+    this.isGrown = () => grown === 1;
+    this.getX = () => x;
+    this.getY = () => y;
+
     this.eatPoll = poll => {
         for (let i = 0; i < pollen.length; ++i) if (pollen[i] === poll) {
             pollen[i] = null;
