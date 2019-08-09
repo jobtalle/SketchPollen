@@ -134,11 +134,6 @@ const Hand = function(x, y, length, sign) {
         context.fillStyle = "white";
 
         context.beginPath();
-        context.arc(handX, handY, 3, 0, Math.PI * 2);
-        context.fill();
-        context.stroke();
-
-        context.beginPath();
         context.moveTo(x, y);
         context.lineTo(elbowX, elbowY);
         context.lineTo(handX, handY);
@@ -146,9 +141,16 @@ const Hand = function(x, y, length, sign) {
 
         if (grabbed)
             grabbed.draw(context);
+
+        context.fillStyle = "black";
+        context.beginPath();
+        context.arc(handX, handY, Hand.RADIUS, 0, Math.PI * 2);
+        context.fill();
+        context.stroke();
     };
 };
 
+Hand.RADIUS = 2;
 Hand.DOWN_SPEED = 50;
 Hand.DOWN_OFFSET = 12;
 Hand.REACH_SPEED = 100;
