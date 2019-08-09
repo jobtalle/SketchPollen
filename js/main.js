@@ -6,6 +6,7 @@ const POLLINATOR_TIME_MAX = 6;
 const POLLINATOR_SPAWN_OFFSET = 300;
 const PLANT_CEILING = 0.1;
 const TIME_STEP_MAX = 0.2;
+const PLANT_GROUND = 16;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
@@ -28,7 +29,7 @@ const spawnPlant = center => {
     plants.push(new Plant(
         growthModels.get(),
         center ? canvas.width * 0.5 : Math.random() * canvas.width,
-        canvas.height + 64,
+        canvas.height + PLANT_GROUND,
         canvas.height * PLANT_CEILING));
 };
 
@@ -95,5 +96,7 @@ requestAnimationFrame(loopFunction);
 
 spawnPlant(true);
 
+/*
 for (let i = 0; i < 2500; ++i)
     update(1 / 60);
+ */
