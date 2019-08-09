@@ -4,6 +4,7 @@ const Plant = function(model, x, floor, ceiling) {
     const phytomers = [new Phytomer(model, stalk, floor - ceiling, null)];
     const flowers = [];
     const originalFloor = floor;
+    const transform = new Transform();
     let lifetime = 0;
     let dying = false;
     let fallSpeed = 0;
@@ -11,14 +12,19 @@ const Plant = function(model, x, floor, ceiling) {
     this.getFlowers = () => flowers;
 
     this.draw = context => {
+        transform.identity();
+
         context.save();
         context.translate(x, floor);
         context.rotate(Math.PI * 1.5);
 
+        transform.translate(x, floor);
+        transform.rotate(Math.PI * -1.5);
+
         context.fillStyle = "#95c4a2";
         context.strokeStyle = "black";
 
-        stalk.draw(context);
+        stalk.draw(context, transform);
 
         context.restore();
     };

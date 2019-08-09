@@ -1,4 +1,5 @@
 const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
+    const transform = new Transform();
     const windNoise = cubicNoiseConfig(Math.random());
     const children = [];
     let angle;
@@ -32,11 +33,16 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
         children.push(newStalk);
     };
 
-    const calculateTip = context => {
-        const transform = context.getTransform();
+    const calculateTip = () => {
+        const v = {
+            x: points[points.length - 1].x,
+            y: points[points.length - 1].y
+        };
 
-        xTip = transform.a * points[points.length - 1].x + transform.c * points[points.length - 1].y + transform.e;
-        yTip = transform.b * points[points.length - 1].x + transform.d * points[points.length - 1].y + transform.f;
+        transform.apply(v);
+
+        xTip = v.x;
+        yTip = v.y;
 
         if (flower)
             flower.setPosition(xTip, yTip);
@@ -90,15 +96,20 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
         angle = (cubicNoiseSample1(windNoise, lifetime * Stalk.WIND_SCALE) - 0.5) * model.getFlexibility() * nChild;
     };
 
-    this.draw = context => {
+    this.draw = (context, t) => {
+        transform.set(t);
+
         context.save();
         context.translate(xRoot, yRoot);
         context.rotate(angle);
 
-        calculateTip(context);
+        transform.translate(xRoot, yRoot);
+        transform.rotate(-angle);
+
+        calculateTip();
 
         for (const child of children)
-            child.draw(context);
+            child.draw(context, t);
 
         const dxTip = points[points.length - 1].x - points[points.length - 2].x;
         const dyTip = points[points.length - 1].y - points[points.length - 2].y;
