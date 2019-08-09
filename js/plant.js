@@ -42,7 +42,7 @@ const Plant = function(model, x, floor, ceiling) {
             floor += fallSpeed;
             fallSpeed *= Plant.FALL_MULTIPLIER;
 
-            if (floor > originalFloor + (originalFloor - ceiling))
+            if (floor > originalFloor * 2)
                 return true;
         }
         else {

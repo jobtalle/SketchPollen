@@ -33,8 +33,10 @@ const Pollinator = function(x, y) {
     const eye = new Eye();
     const armLength = 70;
     const handSpacing = 25;
-    const handLeft = new Hand(x - handSpacing, y, armLength, 1);
-    const handRight = new Hand(x + handSpacing, y, armLength, -1);
+    const handLeft = new Hand(x - handSpacing, y, armLength, 1, Pollinator.BODY_COLOR_A);
+    const handRight = new Hand(x + handSpacing, y, armLength, -1, Pollinator.BODY_COLOR_A);
+    const body = new BodySegment(x, y, 22, Pollinator.BODY_COLOR_B, 5,
+        new BodySegment(x, y, 18, Pollinator.BODY_COLOR_A, 15, null));
     const slots = [];
     let lifetime = 0;
     let target = null;
@@ -132,6 +134,8 @@ const Pollinator = function(x, y) {
         vx -= vx * Pollinator.DAMPING * timeStep;
         vy -= vy * Pollinator.DAMPING * timeStep;
 
+        body.move(x, y);
+
         let pollCount = 0;
 
         for (const slot of slots) {
@@ -168,12 +172,14 @@ const Pollinator = function(x, y) {
     };
 
     this.draw = context => {
+        body.draw(context);
+
         wings.draw(context, x, y, vx);
 
         for (const slot of slots)
             slot.draw(context);
 
-        context.fillStyle = Pollinator.BODY_COLOR;
+        context.fillStyle = Pollinator.BODY_COLOR_A;
         context.beginPath();
         context.moveTo(x - handSpacing, y);
         context.lineTo(x, y - 8);
@@ -204,4 +210,5 @@ Pollinator.DESPAWN_CLEARING = 200;
 Pollinator.NOISE_SPEED = 0.4;
 Pollinator.HOVER_REGION_SCALE = 2;
 Pollinator.BELLY_INSET = 6;
-Pollinator.BODY_COLOR = Hand.COLOR;
+Pollinator.BODY_COLOR_A = "rgb(228,196,25)";
+Pollinator.BODY_COLOR_B = "rgb(97,81,28)";
