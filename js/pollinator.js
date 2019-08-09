@@ -34,6 +34,7 @@ const Slot = function(x, y, xOffset, yOffset) {
 const Pollinator = function(x, y) {
     const noisex = cubicNoiseConfig(Math.random());
     const noisey = cubicNoiseConfig(Math.random());
+    const wings = new Wings();
     const armLength = 70;
     const handSpacing = 25;
     const handLeft = new Hand(x - handSpacing, y, armLength, 1);
@@ -98,6 +99,9 @@ const Pollinator = function(x, y) {
     const approachTarget = (timeStep, plants) => {
         if (target.getPollCount() === 0)
             pickTarget(plants);
+
+        if (!target)
+            return;
 
         lifetime += timeStep;
 
@@ -168,11 +172,13 @@ const Pollinator = function(x, y) {
     };
 
     this.draw = context => {
-        handLeft.draw(context);
-        handRight.draw(context);
+        wings.draw(context, x, y, vx);
 
         for (const slot of slots)
             slot.draw(context);
+
+        handLeft.draw(context);
+        handRight.draw(context);
     };
 
     makeSlots();
