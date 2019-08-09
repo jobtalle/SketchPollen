@@ -1,6 +1,7 @@
 const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
     const transform = new Transform();
     const windNoise = cubicNoiseConfig(Math.random());
+    const flexibility = model.getFlexibility();
     const children = [];
     const leaves = [];
     let angle;
@@ -110,7 +111,7 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
         if (flower)
             flower.update(timeStep);
 
-        angle = (cubicNoiseSample1(windNoise, lifetime * Stalk.WIND_SCALE) - 0.5) * model.getFlexibility() * nChild;
+        angle = (cubicNoiseSample1(windNoise, lifetime * Stalk.WIND_SCALE) - 0.5) * flexibility * nChild;
     };
 
     this.draw = (context, t) => {

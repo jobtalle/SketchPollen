@@ -1,21 +1,12 @@
 const Leaf = function(model, x, y, direction) {
     const noise = cubicNoiseConfig(Math.random());
-    const widths = [];
     const length = model.getLength();
-    const radius = model.getRadius();
     const offsetAngle = model.getOffsetAngle() * (Math.random() < 0.5 ? 1 : -1);
     const growTime = model.getGrowTime();
+    const widths = model.getWidths(model.getRadius());
     let lifetime = 0;
     let angle = 0;
     let scale = 0;
-
-    const makeWidths = () => {
-        for (let i = 0; i < Leaf.PRECISION; ++i) {
-            const x = 2 * (i / (Leaf.PRECISION - 1)) - 1;
-
-            widths[i] = (1 - x * x) * radius;
-        }
-    };
 
     this.update = timeStep => {
         lifetime += timeStep;
@@ -45,8 +36,6 @@ const Leaf = function(model, x, y, direction) {
 
         context.restore();
     };
-
-    makeWidths();
 };
 
 Leaf.NOISE_SCALE = 2;
