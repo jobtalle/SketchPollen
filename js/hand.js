@@ -130,8 +130,8 @@ const Hand = function(x, y, length, sign) {
         const elbowX = x + Math.cos(handDirection + elbowAngle) * length * 0.5;
         const elbowY = y + Math.sin(handDirection + elbowAngle) * length * 0.5;
 
-        context.strokeStyle = "black";
-        context.fillStyle = "white";
+        context.strokeStyle = Hand.COLOR;
+        context.lineWidth = 3;
 
         context.beginPath();
         context.moveTo(x, y);
@@ -142,7 +142,7 @@ const Hand = function(x, y, length, sign) {
         if (grabbed)
             grabbed.draw(context);
 
-        context.fillStyle = "black";
+        context.fillStyle = Hand.COLOR;
         context.beginPath();
         context.arc(handX, handY, Hand.RADIUS, 0, Math.PI * 2);
         context.fill();
@@ -150,7 +150,8 @@ const Hand = function(x, y, length, sign) {
     };
 };
 
-Hand.RADIUS = 2;
+Hand.COLOR = "rgba(235, 177, 0, 0.7)";
+Hand.RADIUS = 3;
 Hand.DOWN_SPEED = 50;
 Hand.DOWN_OFFSET = 12;
 Hand.REACH_SPEED = 100;

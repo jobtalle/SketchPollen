@@ -173,8 +173,7 @@ const Pollinator = function(x, y) {
         for (const slot of slots)
             slot.draw(context);
 
-        context.fillStyle = "#ffbb00aa";
-        context.strokeStyle = "black";
+        context.fillStyle = Pollinator.BODY_COLOR;
         context.beginPath();
         context.moveTo(x - handSpacing, y);
         context.lineTo(x, y - 4);
@@ -182,13 +181,12 @@ const Pollinator = function(x, y) {
         context.arc(x, y + Hand.DOWN_OFFSET, handSpacing - Pollinator.BELLY_INSET, 0, Math.PI);
         context.closePath();
         context.fill();
-        context.stroke();
-
-        handLeft.draw(context);
-        handRight.draw(context);
 
         eye.draw(context, x - 8, y + Hand.DOWN_OFFSET, lifetime);
         eye.draw(context, x + 8, y + Hand.DOWN_OFFSET, lifetime);
+
+        handLeft.draw(context);
+        handRight.draw(context);
     };
 
     makeSlots();
@@ -206,3 +204,4 @@ Pollinator.DESPAWN_CLEARING = 200;
 Pollinator.NOISE_SPEED = 0.4;
 Pollinator.HOVER_REGION_SCALE = 2;
 Pollinator.BELLY_INSET = 6;
+Pollinator.BODY_COLOR = "rgba(235, 177, 0, 0.7)";

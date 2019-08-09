@@ -8,16 +8,14 @@ const Eye = function() {
         context.translate(x, y);
 
         context.fillStyle = "white";
-        context.strokeStyle = "black";
 
         context.beginPath();
         context.arc(0, 0, radius, 0, Math.PI * 2);
         context.fill();
-        context.stroke();
 
         context.rotate(cubicNoiseSample1(noise, lifetime * Eye.NOISE_SCALE) * Math.PI);
         context.translate(radius - pupilRadius, 0);
-        context.fillStyle = "black";
+        context.fillStyle = "#333333";
 
         context.beginPath();
         context.arc(0, 0, pupilRadius, 0, Math.PI * 2);

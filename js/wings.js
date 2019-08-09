@@ -1,5 +1,5 @@
 const Wings = function() {
-    const radius = 90;
+    const radius = 110;
     const size = 1.7;
     const wingAngles = [-1.1, -1.25, -1.4, -1.25];
     let wingAngleIndex = 0;
@@ -20,7 +20,6 @@ const Wings = function() {
 
         context.closePath();
         context.fill();
-        context.stroke();
     };
 
     this.draw = (context, x, y, vx) => {
@@ -32,8 +31,7 @@ const Wings = function() {
         context.save();
 
         context.translate(x, y);
-        context.fillStyle = "#dadada55";
-        context.strokeStyle = "#00000099";
+        context.fillStyle = "rgba(200, 200, 200, 0.5)";
 
         context.save();
         context.rotate(wingAngles[wingAngleIndex] + Math.min(0, motionAngle));

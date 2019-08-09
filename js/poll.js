@@ -28,15 +28,14 @@ const Poll = function() {
     this.isGrown = () => radius === targetRadius;
 
     this.draw = context => {
-        context.fillStyle = "white";
-        context.strokeStyle = "black";
+        context.fillStyle = Poll.COLOR;
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.fill();
-        context.stroke();
     };
 };
 
 Poll.RADIUS_MIN = 4;
 Poll.RADIUS_MAX = 6;
 Poll.GROW_TIME = 8;
+Poll.COLOR = "#e07778";

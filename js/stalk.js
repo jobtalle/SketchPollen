@@ -137,7 +137,7 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
 
         context.closePath();
         context.fill();
-        context.stroke();
+        //context.stroke();
         context.restore();
     };
 };
