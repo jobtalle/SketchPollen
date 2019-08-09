@@ -204,4 +204,4 @@ Pollinator.DESPAWN_CLEARING = 200;
 Pollinator.NOISE_SPEED = 0.4;
 Pollinator.HOVER_REGION_SCALE = 2;
 Pollinator.BELLY_INSET = 6;
-Pollinator.BODY_COLOR = "rgba(235, 177, 0, 0.85)";
+Pollinator.BODY_COLOR = Hand.COLOR;

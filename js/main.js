@@ -1,8 +1,8 @@
 const PLANT_TIME_MIN = 3;
 const PLANT_TIME_MAX = 10;
 const PLANTS_PER_PIXEL = 0.01;
-const POLLINATOR_TIME_MIN = 4;
-const POLLINATOR_TIME_MAX = 6;
+const POLLINATOR_TIME_MIN = 2;
+const POLLINATOR_TIME_MAX = 5;
 const POLLINATOR_SPAWN_OFFSET = 300;
 const PLANT_CEILING = 0.1;
 const TIME_STEP_MAX = 0.2;
@@ -96,7 +96,5 @@ requestAnimationFrame(loopFunction);
 
 spawnPlant(true);
 
-/*
 for (let i = 0; i < 2500; ++i)
     update(1 / 60);
- */

@@ -150,7 +150,7 @@ const Hand = function(x, y, length, sign) {
     };
 };
 
-Hand.COLOR = "rgba(235, 177, 0, 0.7)";
+Hand.COLOR = "rgba(235,180,69,0.85)";
 Hand.RADIUS = 3;
 Hand.DOWN_SPEED = 50;
 Hand.DOWN_OFFSET = 12;

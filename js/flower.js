@@ -1,6 +1,14 @@
 const Flower = function(model, x, y, direction) {
     const noise = cubicNoiseConfig(Math.random());
-    const pollen = new Array(model.getPistilCount());
+    const radius = model.getRadius();
+    const pistilCount = model.getPistilCount();
+    const pistilAngles = model.getPistilAngles(pistilCount);
+    const pistilLengths = model.getPistilLengths(pistilCount, radius);
+    const pollen = new Array(pistilCount);
+    const petalCount = model.getPetalCount();
+    const petalLength = model.getPetalLength();
+    const petalWidths = model.getPetalWidths();
+    const petalColors = model.getPetalColors();
     let grown = 0;
     let lifetime = 0;
     let wiggle = 0;
@@ -12,26 +20,26 @@ const Flower = function(model, x, y, direction) {
             pollen[i] = new Poll();
     };
 
-    const drawPetal = context => {
+    const drawPetals = context => {
         context.save();
         context.scale(grown, grown);
 
-        for (let i = 0; i < model.getPetalCount(); ++i) {
-            context.fillStyle = model.getPetalColors()[i % model.getPetalColors().length];
+        for (let i = 0; i < petalCount; ++i) {
+            context.fillStyle = petalColors[i % petalColors.length];
 
             context.beginPath();
             context.moveTo(0, 0);
 
-            for (let i = 1; i <  model.getPetalWidths().length; ++i)
-                context.lineTo((i / ( model.getPetalCount() - 1)) * model.getPetalLength(), -model.getPetalWidths()[i]);
+            for (let i = 1; i <  petalWidths.length; ++i)
+                context.lineTo((i / (petalCount - 1)) * petalLength, -petalWidths[i]);
 
-            for (let i =  model.getPetalWidths().length; i-- > 1;)
-                context.lineTo((i / ( model.getPetalCount() - 1)) * model.getPetalLength(), model.getPetalWidths()[i]);
+            for (let i =  petalWidths.length; i-- > 1;)
+                context.lineTo((i / (petalCount - 1)) * petalLength, petalWidths[i]);
 
             context.closePath();
             context.fill();
 
-            context.rotate((Math.PI * 2) / model.getPetalCount());
+            context.rotate((Math.PI * 2) / petalCount);
         }
 
         context.restore();
@@ -42,7 +50,7 @@ const Flower = function(model, x, y, direction) {
     this.isClaimed = () => claimed !== 0;
     this.getX = () => x;
     this.getY = () => y;
-    this.getRadius = () => model.getRadius();
+    this.getRadius = () => radius;
 
     this.claim = () => {
         ++claimed;
@@ -93,8 +101,8 @@ const Flower = function(model, x, y, direction) {
             if (!pollen[i])
                 continue;
 
-            const length = model.getPistilLengths()[i] * grown;
-            const angle = model.getPistilAngles()[i] + direction + wiggle;
+            const length = pistilLengths[i] * grown;
+            const angle = pistilAngles[i] + direction + wiggle;
 
             pollen[i].setPosition(
                 x + Math.cos(angle) * length,
@@ -125,11 +133,11 @@ const Flower = function(model, x, y, direction) {
         context.translate(x, y);
         context.rotate(direction + wiggle);
 
-        drawPetal(context);
+        drawPetals(context);
 
-        for (let i = 0; i < model.getPistilCount(); ++i) {
-            const length = model.getPistilLengths()[i] * grown;
-            const angle = model.getPistilAngles()[i];
+        for (let i = 0; i < pistilCount; ++i) {
+            const length = pistilLengths[i] * grown;
+            const angle = pistilAngles[i];
 
             context.beginPath();
             context.moveTo(0, 0);
