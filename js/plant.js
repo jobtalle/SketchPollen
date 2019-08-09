@@ -21,7 +21,7 @@ const Plant = function(model, x, floor, ceiling) {
         transform.translate(x, floor);
         transform.rotate(Math.PI * -1.5);
 
-        context.fillStyle = "#95c4a2";
+        context.fillStyle = "#79af84";
         context.strokeStyle = "black";
 
         stalk.draw(context, transform);

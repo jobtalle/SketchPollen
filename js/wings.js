@@ -31,7 +31,7 @@ const Wings = function() {
         context.save();
 
         context.translate(x, y);
-        context.fillStyle = "rgba(200, 200, 200, 0.5)";
+        context.fillStyle = "rgba(246,246,246,0.5)";
 
         context.save();
         context.rotate(wingAngles[wingAngleIndex] + Math.min(0, motionAngle));
