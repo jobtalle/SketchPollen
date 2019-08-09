@@ -174,5 +174,5 @@ Pollinator.VELOCITY_X_MAX = 300;
 Pollinator.GRAVITY = 120;
 Pollinator.DAMPING = 0.5;
 Pollinator.DESPAWN_CLEARING = 200;
-Pollinator.NOISE_SPEED = 0.2;
+Pollinator.NOISE_SPEED = 0.4;
 Pollinator.HOVER_REGION_SCALE = 2;
