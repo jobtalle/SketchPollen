@@ -32,11 +32,14 @@ const Slot = function(x, y, xOffset, yOffset) {
 };
 
 const Pollinator = function(x, y) {
+    const noisex = cubicNoiseConfig(Math.random());
+    const noisey = cubicNoiseConfig(Math.random());
     const armLength = 70;
     const handSpacing = 25;
     const handLeft = new Hand(x - handSpacing, y, armLength, 1);
     const handRight = new Hand(x + handSpacing, y, armLength, -1);
     const slots = [];
+    let lifetime = 0;
     let target = null;
     let updateTimer = 0;
     let vx = 0;
@@ -83,8 +86,12 @@ const Pollinator = function(x, y) {
     };
 
     const approachTarget = timeStep => {
-        const dx = target.getX() - x;
-        const dy = target.getY() - y - Hand.DOWN_OFFSET - 20;
+        lifetime += timeStep;
+
+        const xOffset = (cubicNoiseSample1(noisex, lifetime * Pollinator.NOISE_SPEED) - 0.5) * 2 * target.getRadius();
+        const yOffset = (cubicNoiseSample1(noisey, lifetime * Pollinator.NOISE_SPEED) - 0.5) * 2 * target.getRadius();
+        const dx = target.getX() + xOffset * Pollinator.HOVER_REGION_SCALE - x;
+        const dy = target.getY() + yOffset * Pollinator.HOVER_REGION_SCALE - y - (armLength + Hand.DOWN_OFFSET) * 0.5;
 
         if (dx > 0)
             vx += Pollinator.ACCELERATION_X * timeStep;
@@ -167,3 +174,5 @@ Pollinator.VELOCITY_X_MAX = 300;
 Pollinator.GRAVITY = 120;
 Pollinator.DAMPING = 0.5;
 Pollinator.DESPAWN_CLEARING = 200;
+Pollinator.NOISE_SPEED = 0.2;
+Pollinator.HOVER_REGION_SCALE = 2;

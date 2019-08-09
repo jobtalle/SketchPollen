@@ -68,15 +68,15 @@ const update = timeStep => {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (const pollinator of pollinators)
-        pollinator.draw(context);
-
     for (const plant of plants) {
         plant.draw(context);
 
         for (const flower of plant.getFlowers())
             flower.draw(context);
     }
+
+    for (const pollinator of pollinators)
+        pollinator.draw(context);
 };
 
 const loopFunction = () => {

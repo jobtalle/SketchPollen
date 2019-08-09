@@ -22,15 +22,16 @@ const Hand = function(x, y, length, sign) {
     };
 
     const reach = (timeStep, flower) => {
+        const speed = Hand.REACH_SPEED * timeStep;
         const dx = poll.getX() - handX;
         const dy = poll.getY() - handY;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < Hand.GRAB_THRESHOLD)
+        if (dist < speed || dist < Hand.GRAB_THRESHOLD)
             grab(flower);
         else {
-            handX += (dx / dist) * Hand.REACH_SPEED * timeStep;
-            handY += (dy / dist) * Hand.REACH_SPEED * timeStep;
+            handX += (dx / dist) * speed;
+            handY += (dy / dist) * speed;
         }
     };
 
@@ -150,7 +151,7 @@ const Hand = function(x, y, length, sign) {
 
 Hand.DOWN_SPEED = 50;
 Hand.DOWN_OFFSET = 12;
-Hand.REACH_SPEED = 60;
+Hand.REACH_SPEED = 100;
 Hand.STORE_SPEED = 70;
 Hand.GRAB_THRESHOLD = 1;
 Hand.DAMPING = 0.75;

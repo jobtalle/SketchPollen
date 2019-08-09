@@ -17,6 +17,7 @@ const Flower = function(model, x, y, direction) {
     this.isClaimed = () => claimed;
     this.getX = () => x;
     this.getY = () => y;
+    this.getRadius = () => model.getRadius();
 
     this.claim = () => {
         claimed = true;
