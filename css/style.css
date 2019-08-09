@@ -5,7 +5,7 @@ body {
 #wrapper {
     width: 100vw;
     height: 100vh;
-    background-image: linear-gradient(to bottom, #93bbd8, #c4dcef 70%, #8c9a80 72%, #6b6e61 100%);
+    background-image: linear-gradient(to bottom, #4579b3, #c0dceb 70%, #4f653f 72%, #333832 100%);
     overflow: hidden;
 }
 

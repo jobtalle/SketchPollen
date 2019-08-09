@@ -51,5 +51,5 @@ const Leaf = function(model, x, y, direction) {
 
 Leaf.NOISE_SCALE = 2;
 Leaf.WIGGLE_AMPLITUDE = 0.5;
-Leaf.COLOR = "rgba(145,214,154,0.85)";
+Leaf.COLOR = "rgb(174,223,95)";
 Leaf.PRECISION = 8;

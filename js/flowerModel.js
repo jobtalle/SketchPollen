@@ -2,8 +2,8 @@ const FlowerModel = function() {
     const petalCount = 12;
     const petalLength = 140;
     const petalColors = [
-        "#abdded",
-        "#97c2d0"];
+        "#c0a7da",
+        "#9c7fc0"];
 
     this.getPetalWidths = () => {
         const petalWidth = 10;
