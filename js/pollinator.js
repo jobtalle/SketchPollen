@@ -35,6 +35,7 @@ const Pollinator = function(x, y) {
     const noisex = cubicNoiseConfig(Math.random());
     const noisey = cubicNoiseConfig(Math.random());
     const wings = new Wings();
+    const eye = new Eye();
     const armLength = 70;
     const handSpacing = 25;
     const handLeft = new Hand(x - handSpacing, y, armLength, 1);
@@ -87,7 +88,7 @@ const Pollinator = function(x, y) {
 
         if (candidates.length > 0)
             target = candidates[Math.floor(Math.random() * candidates.length)];
-        else
+        else if (claimed.length > 0)
             target = claimed[Math.floor(Math.random() * claimed.length)];
 
         if (target)
@@ -174,11 +175,24 @@ const Pollinator = function(x, y) {
     this.draw = context => {
         wings.draw(context, x, y, vx);
 
+        context.fillStyle = "yellow";
+        context.strokeStyle = "black";
+        context.beginPath();
+        context.moveTo(x - 8, y - 8);
+        context.lineTo(x + 8, y - 8);
+        context.arc(x, y, 18, 0, Math.PI);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
         for (const slot of slots)
             slot.draw(context);
 
         handLeft.draw(context);
         handRight.draw(context);
+
+        eye.draw(context, x - 8, y, lifetime);
+        eye.draw(context, x + 8, y, lifetime);
     };
 
     makeSlots();
