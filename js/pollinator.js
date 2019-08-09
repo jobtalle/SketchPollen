@@ -67,25 +67,33 @@ const Pollinator = function(x, y) {
     };
 
     const pickTarget = plants => {
-        if (target)
-            if (target.getPollCount() > 0)
-                return;
-
+        const claimed = [];
         const candidates = [];
 
-        for (const plant of plants) for (const flower of plant.getFlowers())
-            if (flower.isGrown() && !flower.isClaimed() && flower.getPollCount() > 0)
-                candidates.push(flower);
+        for (const plant of plants) for (const flower of plant.getFlowers()) {
+            if (flower.isGrown() && flower.getPollCount() > 0) {
+                if (!flower.isClaimed())
+                    candidates.push(flower);
+                else
+                    claimed.push(flower);
+            }
+        }
+
+        if (target)
+            target.unclaim();
 
         if (candidates.length > 0) {
-            if (target)
-                target.unclaim();
             target = candidates[Math.floor(Math.random() * candidates.length)];
             target.claim();
         }
+        else
+            target = claimed[Math.floor(Math.random() * claimed.length)];
     };
 
-    const approachTarget = timeStep => {
+    const approachTarget = (timeStep, plants) => {
+        if (target.getPollCount() === 0)
+            pickTarget(plants);
+
         lifetime += timeStep;
 
         const xOffset = (cubicNoiseSample1(noisex, lifetime * Pollinator.NOISE_SPEED) - 0.5) * 2 * target.getRadius();
@@ -104,7 +112,7 @@ const Pollinator = function(x, y) {
 
     this.update = (timeStep, plants) => {
         if (target)
-            approachTarget(timeStep);
+            approachTarget(timeStep, plants);
 
         vy = Math.min(vy + Pollinator.GRAVITY * timeStep, Pollinator.VELOCITY_Y_MAX);
 
@@ -165,12 +173,12 @@ const Pollinator = function(x, y) {
     makeSlots();
 };
 
-Pollinator.UPDATE_TIME_MIN = 3;
-Pollinator.UPDATE_TIME_MAX = 10;
+Pollinator.UPDATE_TIME_MIN = 10;
+Pollinator.UPDATE_TIME_MAX = 18;
 Pollinator.ACCELERATION_X = 280;
 Pollinator.ACCELERATION_Y = 700;
 Pollinator.VELOCITY_Y_MAX = 500;
-Pollinator.VELOCITY_X_MAX = 300;
+Pollinator.VELOCITY_X_MAX = 160;
 Pollinator.GRAVITY = 120;
 Pollinator.DAMPING = 0.5;
 Pollinator.DESPAWN_CLEARING = 200;

@@ -1,5 +1,5 @@
-const PLANT_TIME_MIN = 1;
-const PLANT_TIME_MAX = 4;
+const PLANT_TIME_MIN = 3;
+const PLANT_TIME_MAX = 10;
 const PLANTS_PER_PIXEL = 0.01;
 const POLLINATOR_TIME_MIN = 1;
 const POLLINATOR_TIME_MAX = 4;

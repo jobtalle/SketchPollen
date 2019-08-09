@@ -3,10 +3,9 @@ const Plant = function(model, x, floor, ceiling) {
     const stalk = new Stalk(model, 0, 0, 0, 1, true);
     const phytomers = [new Phytomer(model, stalk, floor - ceiling, null)];
     const flowers = [];
-    const fallSign = Math.random() < 0.5 ? -1 : 1;
+    const originalFloor = floor;
     let lifetime = 0;
     let dying = false;
-    let angle = Math.PI * 1.5;
     let fallSpeed = 0;
 
     this.getFlowers = () => flowers;
@@ -14,7 +13,7 @@ const Plant = function(model, x, floor, ceiling) {
     this.draw = context => {
         context.save();
         context.translate(x, floor);
-        context.rotate(angle);
+        context.rotate(Math.PI * 1.5);
 
         context.fillStyle = "#95c4a2";
         context.strokeStyle = "black";
@@ -27,15 +26,16 @@ const Plant = function(model, x, floor, ceiling) {
     this.update = timeStep => {
         lifetime += timeStep;
 
-        if (dying) {
-            if (Math.sin(angle += fallSign * fallSpeed * timeStep) > Plant.DELETE_THRESHOLD)
-                return true;
+        stalk.update(timeStep, lifetime);
 
+        if (dying) {
+            floor += fallSpeed;
             fallSpeed *= Plant.FALL_MULTIPLIER;
+
+            if (floor > originalFloor + (originalFloor - ceiling))
+                return true;
         }
         else {
-            stalk.update(timeStep, lifetime);
-
             for (let i = phytomers.length; i-- > 0;)
                 if (phytomers[i].update(timeStep, growthSpeed, phytomers, flowers))
                     phytomers.splice(i, 1);
@@ -58,5 +58,5 @@ const Plant = function(model, x, floor, ceiling) {
 Plant.GROWTH_SPEED_MIN = 8;
 Plant.GROWTH_SPEED_MAX = 24;
 Plant.FALL_SPEED = 0.05;
-Plant.FALL_MULTIPLIER = 1.01;
+Plant.FALL_MULTIPLIER = 1.007;
 Plant.DELETE_THRESHOLD = 0.8;
