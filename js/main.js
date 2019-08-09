@@ -20,6 +20,9 @@ let lastDate = new Date();
 const resize = () => {
     canvas.width = wrapper.offsetWidth;
     canvas.height = wrapper.offsetHeight;
+
+    for (const plant of plants)
+        plant.rebase(canvas.height + PLANT_GROUND);
 };
 
 const spawnPlant = center => {

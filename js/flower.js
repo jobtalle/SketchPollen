@@ -101,7 +101,7 @@ const Flower = function(model, x, y, direction) {
             if (!pollen[i])
                 continue;
 
-            const length = pistilLengths[i] * grown;
+            const length = pistilLengths[i] * grown * grown;
             const angle = pistilAngles[i] + direction + wiggle;
 
             pollen[i].setPosition(
@@ -136,7 +136,7 @@ const Flower = function(model, x, y, direction) {
         drawPetals(context);
 
         for (let i = 0; i < pistilCount; ++i) {
-            const length = pistilLengths[i] * grown;
+            const length = pistilLengths[i] * grown * grown;
             const angle = pistilAngles[i];
 
             context.beginPath();

@@ -1,7 +1,7 @@
 const Wings = function() {
-    const radius = 110;
-    const size = 1.7;
-    const wingAngles = [-1.1, -1.25, -1.4, -1.25];
+    const radius = 70;
+    const size = 2;
+    const wingAngles = [-1.1, -1.3, -1.5, -1.3];
     let wingAngleIndex = 0;
 
     const drawWing = context => {
@@ -51,4 +51,4 @@ const Wings = function() {
 };
 
 Wings.PRECISION = 10;
-Wings.SIDE_ANGLE = 0.005;
+Wings.SIDE_ANGLE = 0.006;

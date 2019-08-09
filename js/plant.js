@@ -3,11 +3,15 @@ const Plant = function(model, x, floor, ceiling) {
     const stalk = new Stalk(model, 0, 0, 0, 1, true);
     const phytomers = [new Phytomer(model, stalk, floor - ceiling, null)];
     const flowers = [];
-    const originalFloor = floor;
     const transform = new Transform();
+    let originalFloor = floor;
     let lifetime = 0;
     let dying = false;
     let fallSpeed = 0;
+
+    this.rebase = base => {
+        floor = originalFloor = base;
+    };
 
     this.getFlowers = () => flowers;
 
