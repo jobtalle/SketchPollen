@@ -5,7 +5,7 @@ const Flower = function(model, x, y, direction) {
     let lifetime = 0;
     let wiggle = 0;
     let pollCount = model.getPistilCount();
-    let claimed = false;
+    let claimed = 0;
 
     const makePollen = () => {
         for (let i = 0; i < pollen.length; ++i)
@@ -14,17 +14,17 @@ const Flower = function(model, x, y, direction) {
 
     this.getPollCount = () => pollCount;
     this.isGrown = () => grown === 1;
-    this.isClaimed = () => claimed;
+    this.isClaimed = () => claimed !== 0;
     this.getX = () => x;
     this.getY = () => y;
     this.getRadius = () => model.getRadius();
 
     this.claim = () => {
-        claimed = true;
+        ++claimed;
     };
 
     this.unclaim = () => {
-        claimed = false;
+        --claimed;
     };
 
     this.grabPoll = poll => {

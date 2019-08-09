@@ -58,5 +58,5 @@ const Plant = function(model, x, floor, ceiling) {
 Plant.GROWTH_SPEED_MIN = 8;
 Plant.GROWTH_SPEED_MAX = 24;
 Plant.FALL_SPEED = 0.05;
-Plant.FALL_MULTIPLIER = 1.007;
+Plant.FALL_MULTIPLIER = 1.002;
 Plant.DELETE_THRESHOLD = 0.8;

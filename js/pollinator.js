@@ -79,15 +79,20 @@ const Pollinator = function(x, y) {
             }
         }
 
-        if (target)
+        if (target) {
             target.unclaim();
-
-        if (candidates.length > 0) {
-            target = candidates[Math.floor(Math.random() * candidates.length)];
-            target.claim();
+            target = null;
         }
+
+        if (candidates.length > 0)
+            target = candidates[Math.floor(Math.random() * candidates.length)];
         else
             target = claimed[Math.floor(Math.random() * claimed.length)];
+
+        if (target)
+            target.claim();
+        else
+            leave = true;
     };
 
     const approachTarget = (timeStep, plants) => {
