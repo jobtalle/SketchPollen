@@ -93,6 +93,27 @@ const Flower = function(model, x, y, direction) {
     };
 
     this.draw = context => {
+        context.lineWidth = 2;
+        context.strokeStyle = Poll.COLOR;
+
+        context.save();
+        context.translate(x, y);
+        context.rotate(direction + wiggle);
+
+        for (let i = 0; i < model.getPistilCount(); ++i) {
+            const length = model.getPistilLengths()[i] * grown;
+            const angle = model.getPistilAngles()[i];
+
+            context.beginPath();
+            context.moveTo(0, 0);
+            context.lineTo(
+                Math.cos(angle) * length,
+                Math.sin(angle) * length);
+            context.stroke();
+        }
+
+        context.restore();
+
         for (const poll of pollen) if (poll)
             poll.draw(context);
     };
