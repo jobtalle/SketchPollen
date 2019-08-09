@@ -2,6 +2,13 @@ const FlowerModel = function() {
     const pistilCount = 24;
     const pistilAngles = [];
     const pistilLengths = [];
+    const petalCount = 12;
+    const petalLength = 140;
+    const petalWidth = 10;
+    const petalWidths = [];
+    const petalColors = [
+        "#abdded",
+        "#97c2d0"];
     let radius = 0;
 
     const initializePistils = () => {
@@ -14,6 +21,30 @@ const FlowerModel = function() {
             if (radius < length)
                 radius = length;
         }
+    };
+
+    const initializePetals = () => {
+        for (let i = 0; i < FlowerModel.PETAL_PRECISION; ++i) {
+            const x = 2 * (i / (FlowerModel.PETAL_PRECISION - 1)) - 1;
+
+            petalWidths[i] = (1 - x * x) * petalWidth;
+        }
+    };
+
+    this.getPetalWidths = () => {
+        return petalWidths;
+    };
+
+    this.getPetalLength = () => {
+        return petalLength;
+    };
+
+    this.getPetalCount = () => {
+        return petalCount;
+    };
+
+    this.getPetalColors = () => {
+        return petalColors;
     };
 
     this.getRadius = () => {
@@ -45,4 +76,7 @@ const FlowerModel = function() {
     };
 
     initializePistils();
+    initializePetals();
 };
+
+FlowerModel.PETAL_PRECISION = 8;

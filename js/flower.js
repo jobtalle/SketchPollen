@@ -12,6 +12,31 @@ const Flower = function(model, x, y, direction) {
             pollen[i] = new Poll();
     };
 
+    const drawPetal = context => {
+        context.save();
+        context.scale(grown, grown);
+
+        for (let i = 0; i < model.getPetalCount(); ++i) {
+            context.fillStyle = model.getPetalColors()[i % model.getPetalColors().length];
+
+            context.beginPath();
+            context.moveTo(0, 0);
+
+            for (let i = 1; i <  model.getPetalWidths().length; ++i)
+                context.lineTo((i / ( model.getPetalCount() - 1)) * model.getPetalLength(), -model.getPetalWidths()[i]);
+
+            for (let i =  model.getPetalWidths().length; i-- > 1;)
+                context.lineTo((i / ( model.getPetalCount() - 1)) * model.getPetalLength(), model.getPetalWidths()[i]);
+
+            context.closePath();
+            context.fill();
+
+            context.rotate((Math.PI * 2) / model.getPetalCount());
+        }
+
+        context.restore();
+    };
+
     this.getPollCount = () => pollCount;
     this.isGrown = () => grown === 1;
     this.isClaimed = () => claimed !== 0;
@@ -99,6 +124,8 @@ const Flower = function(model, x, y, direction) {
         context.save();
         context.translate(x, y);
         context.rotate(direction + wiggle);
+
+        drawPetal(context);
 
         for (let i = 0; i < model.getPistilCount(); ++i) {
             const length = model.getPistilLengths()[i] * grown;

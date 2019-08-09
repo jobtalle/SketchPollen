@@ -176,7 +176,7 @@ const Pollinator = function(x, y) {
         context.fillStyle = Pollinator.BODY_COLOR;
         context.beginPath();
         context.moveTo(x - handSpacing, y);
-        context.lineTo(x, y - 4);
+        context.lineTo(x, y - 8);
         context.lineTo(x + handSpacing, y);
         context.arc(x, y + Hand.DOWN_OFFSET, handSpacing - Pollinator.BELLY_INSET, 0, Math.PI);
         context.closePath();
@@ -204,4 +204,4 @@ Pollinator.DESPAWN_CLEARING = 200;
 Pollinator.NOISE_SPEED = 0.4;
 Pollinator.HOVER_REGION_SCALE = 2;
 Pollinator.BELLY_INSET = 6;
-Pollinator.BODY_COLOR = "rgba(235, 177, 0, 0.7)";
+Pollinator.BODY_COLOR = "rgba(235, 177, 0, 0.85)";
