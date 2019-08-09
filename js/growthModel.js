@@ -1,6 +1,10 @@
-const GrowthModel = function(flowerModel) {
+const GrowthModel = function(flowerModel, leafModel) {
     this.getBranchChance = (length, maxLength) => {
         return 0.2;
+    };
+
+    this.getLeafChance = (length, maxLength) => {
+        return 0.8;
     };
 
     this.getBranchLengthScale = () => {
@@ -25,5 +29,9 @@ const GrowthModel = function(flowerModel) {
 
     this.getFlowerModel = () => {
         return flowerModel;
+    };
+
+    this.getLeafModel = () => {
+        return leafModel;
     };
 };

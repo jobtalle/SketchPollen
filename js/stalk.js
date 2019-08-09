@@ -2,6 +2,7 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
     const transform = new Transform();
     const windNoise = cubicNoiseConfig(Math.random());
     const children = [];
+    const leaves = [];
     let angle;
     let flower = null;
     let xTip, yTip;
@@ -31,6 +32,16 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
 
         phytomers.push(newPhytomer);
         children.push(newStalk);
+    };
+
+    const makeLeaf = (direction) => {
+        const newLeaf = new Leaf(
+            model.getLeafModel(),
+            points[points.length - 2].x,
+            points[points.length - 2].y,
+            direction);
+
+        leaves.push(newLeaf);
     };
 
     const calculateTip = () => {
@@ -80,15 +91,21 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
 
             points.push(new Point(x, y));
 
-            if (Math.random() < model.getBranchChance((points.length - 1) * Stalk.RESOLUTION, maxLength))
+            if (Math.random() < model.getBranchChance((points.length - 1) * Stalk.RESOLUTION, maxLength)) {
                 if (maxLength > Stalk.RESOLUTION)
                     branch(phytomers, maxLength, direction);
+            }
+            else if (Math.random() < model.getLeafChance((points.length - 1) * Stalk.RESOLUTION, maxLength))
+                makeLeaf(direction);
         }
     };
 
     this.update = (timeStep, lifetime) => {
         for (const child of children)
             child.update(timeStep, lifetime);
+
+        for (const leaf of leaves)
+            leaf.update(timeStep);
 
         if (flower)
             flower.update(timeStep);
@@ -137,7 +154,10 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
 
         context.closePath();
         context.fill();
-        //context.stroke();
+
+        for (const leaf of leaves)
+            leaf.draw(context);
+
         context.restore();
     };
 };
