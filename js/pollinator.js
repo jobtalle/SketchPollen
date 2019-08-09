@@ -21,11 +21,6 @@ const Slot = function(x, y, xOffset, yOffset) {
     };
 
     this.draw = context => {
-        context.strokeStyle = "blue";
-        context.beginPath();
-        context.arc(x + xOffset, y + yOffset, 3, 0, Math.PI * 2);
-        context.stroke();
-
         if (poll)
             poll.draw(context);
     };
@@ -175,24 +170,25 @@ const Pollinator = function(x, y) {
     this.draw = context => {
         wings.draw(context, x, y, vx);
 
-        context.fillStyle = "yellow";
+        for (const slot of slots)
+            slot.draw(context);
+
+        context.fillStyle = "#ffbb00aa";
         context.strokeStyle = "black";
         context.beginPath();
-        context.moveTo(x - 8, y - 8);
-        context.lineTo(x + 8, y - 8);
-        context.arc(x, y, 18, 0, Math.PI);
+        context.moveTo(x - handSpacing, y);
+        context.lineTo(x, y - 4);
+        context.lineTo(x + handSpacing, y);
+        context.arc(x, y + Hand.DOWN_OFFSET, handSpacing - Pollinator.BELLY_INSET, 0, Math.PI);
         context.closePath();
         context.fill();
         context.stroke();
 
-        for (const slot of slots)
-            slot.draw(context);
-
         handLeft.draw(context);
         handRight.draw(context);
 
-        eye.draw(context, x - 8, y, lifetime);
-        eye.draw(context, x + 8, y, lifetime);
+        eye.draw(context, x - 8, y + Hand.DOWN_OFFSET, lifetime);
+        eye.draw(context, x + 8, y + Hand.DOWN_OFFSET, lifetime);
     };
 
     makeSlots();
@@ -209,3 +205,4 @@ Pollinator.DAMPING = 0.5;
 Pollinator.DESPAWN_CLEARING = 200;
 Pollinator.NOISE_SPEED = 0.4;
 Pollinator.HOVER_REGION_SCALE = 2;
+Pollinator.BELLY_INSET = 6;
