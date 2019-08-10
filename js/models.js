@@ -16,7 +16,14 @@ const Models = function() {
     };
 
     const makeLeafModel = () => {
-        return new LeafModel();
+        return new LeafModel(
+            Models.LEAF_RADIUS_MIN + (Models.LEAF_RADIUS_MAX - Models.LEAF_RADIUS_MIN) * Math.random(),
+            Models.LEAF_LENGTH_MIN + (Models.LEAF_LENGTH_MAX - Models.LEAF_LENGTH_MIN) * Math.random(),
+            Models.LEAF_OFFSET_ANGLE_MIN + (Models.LEAF_OFFSET_ANGLE_MAX - Models.LEAF_OFFSET_ANGLE_MIN) * Math.random(),
+            Models.LEAF_GROW_TIME_MIN + (Models.LEAF_GROW_TIME_MAX - Models.LEAF_GROW_TIME_MIN) * Math.random(),
+            Models.LEAF_STALK_COLORS[Math.floor(Math.random() * Models.LEAF_STALK_COLORS.length)],
+            Models.LEAF_COLORS[Math.floor(Math.random() * Models.LEAF_COLORS.length)],
+        );
     };
 
     const makeModel = () => {
@@ -48,12 +55,31 @@ Models.SINGLETON_CHANCE = 0.03;
 Models.NEW_INTERVAL_MIN = 6;
 Models.NEW_INTERVAL_MAX = 10;
 
+Models.LEAF_RADIUS_MIN = 8;
+Models.LEAF_RADIUS_MAX = 16;
+Models.LEAF_LENGTH_MIN = 50;
+Models.LEAF_LENGTH_MAX = 90;
+Models.LEAF_OFFSET_ANGLE_MIN = Math.PI * 0.1;
+Models.LEAF_OFFSET_ANGLE_MAX = Math.PI * 0.5;
+Models.LEAF_GROW_TIME_MIN = 5;
+Models.LEAF_GROW_TIME_MAX = 12;
+Models.LEAF_STALK_COLORS = [
+    "#76ae4d",
+    "#749854",
+    "#779454"
+];
+Models.LEAF_COLORS = [
+    "#a7d65b",
+    "#bbd659",
+    "#a5d369"
+];
+
 Models.FLOWER_POWER_MIN = 0.3;
 Models.FLOWER_POWER_MAX = 2;
 Models.FLOWER_WIDTH_MIN = 6;
-Models.FLOWER_WIDTH_MAX = 18;
+Models.FLOWER_WIDTH_MAX = 16;
 Models.FLOWER_PETALS_MIN = 10;
-Models.FLOWER_PETALS_MAX = 24;
+Models.FLOWER_PETALS_MAX = 22;
 Models.FLOWER_LENGTH_MIN = 50;
 Models.FLOWER_LENGTH_MAX = 100;
 Models.FLOWER_PISTIL_COUNT_MIN = 6;

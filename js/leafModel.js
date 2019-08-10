@@ -1,10 +1,17 @@
-const LeafModel = function() {
+const LeafModel = function(
+    radius,
+    length,
+    offsetAngle,
+    growTime,
+    stalkColor,
+    leafColor
+) {
     this.getRadius = () => {
-        return 12;
+        return radius;
     };
 
     this.getLength = () => {
-        return 70;
+        return length;
     };
 
     this.getWidths = radius => {
@@ -20,18 +27,18 @@ const LeafModel = function() {
     };
 
     this.getOffsetAngle = () => {
-        return Math.PI * 0.3;
+        return offsetAngle;
     };
 
     this.getGrowTime = () => {
-        return 7;
+        return growTime;
     };
 
     this.getStalkColor = () => {
-        return "#76ae4d";
+        return stalkColor;
     };
 
     this.getColor = () => {
-        return "rgb(174,223,95)";
+        return leafColor;
     };
 };
