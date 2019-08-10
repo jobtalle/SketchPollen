@@ -10,7 +10,7 @@ const PLANT_GROUND = 16;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
-const growthModels = new GrowthModels();
+const growthModels = new Models();
 const plants = [];
 const pollinators = [];
 let plantTimer = 0;
