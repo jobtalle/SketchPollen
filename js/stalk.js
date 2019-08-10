@@ -43,16 +43,11 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
     };
 
     const makeLeaf = (direction) => {
-        const dx = points[points.length - 2].x - points[points.length - 3].x;
-        const dy = points[points.length - 2].y - points[points.length - 3].y;
-        const f = Math.random();
-        const angle = Math.atan2(dy, dx);
-
         const newLeaf = new Leaf(
             model.getLeafModel(),
-            points[points.length - 3].x + dx * f,
-            points[points.length - 3].y + dy * f,
-            angle + (direction - angle) * f);
+            points[points.length - 2].x,
+            points[points.length - 2].y,
+            direction);
 
         leaves.push(newLeaf);
     };
@@ -121,11 +116,11 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
             lefts.push(new Coordinate(0, 0));
             rights.push(new Coordinate(0, 0));
 
-            if (Math.random() < model.getBranchChance((points.length - 1) * Stalk.RESOLUTION, maxLength)) {
+            if (Math.random() < model.getBranchChance((points.length - 1) * Stalk.RESOLUTION, maxLength))
                 if (maxLength > Stalk.RESOLUTION)
                     branch(phytomers, maxLength, direction);
-            }
-            else if (Math.random() < model.getLeafChance((points.length - 1) * Stalk.RESOLUTION, maxLength))
+
+            if (Math.random() < model.getLeafChance((points.length - 1) * Stalk.RESOLUTION, maxLength))
                 makeLeaf(direction);
         }
 

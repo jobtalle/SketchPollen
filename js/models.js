@@ -61,12 +61,14 @@ Models.NEW_INTERVAL_MAX = 10;
 
 Models.DIST_FUNCTION_COS_INCREASE = new Function("x", "return Math.cos(x * Math.PI) * -0.5 + 0.5");
 Models.DIST_FUNCTION_COS_DECREASE = new Function("x", "return Math.cos(x * Math.PI) * 0.5 + 0.5");
+Models.DIST_FUNCTION_COS_FIRST_HALF = new Function("x", "return Math.cos(Math.min(x * Math.PI * 2, Math.PI)) * 0.5 + 0.5;");
 
-Models.BRANCH_CHANCE_MIN = 0.3;
-Models.BRANCH_CHANCE_MAX = 1;
+Models.BRANCH_CHANCE_MIN = 0;
+Models.BRANCH_CHANCE_MAX = 0.5;
 Models.DISTRIBUTION_FUNCTIONS_BRANCHING = [
     Models.DIST_FUNCTION_COS_INCREASE,
-    Models.DIST_FUNCTION_COS_DECREASE
+    Models.DIST_FUNCTION_COS_DECREASE,
+    Models.DIST_FUNCTION_COS_FIRST_HALF
 ];
 Models.LEAF_CHANCE_MIN = 0.7;
 Models.LEAF_CHANCE_MAX = 1;
@@ -74,19 +76,19 @@ Models.DISTRIBUTION_FUNCTIONS_LEAVES = [
     Models.DIST_FUNCTION_COS_DECREASE
 ];
 
-Models.LEAF_RADIUS_MIN = 6;
+Models.LEAF_RADIUS_MIN = 8;
 Models.LEAF_RADIUS_MAX = 16;
 Models.LEAF_LENGTH_MIN = 50;
 Models.LEAF_LENGTH_MAX = 90;
-Models.LEAF_OFFSET_ANGLE_MIN = Math.PI * 0.1;
-Models.LEAF_OFFSET_ANGLE_MAX = Math.PI * 0.4;
+Models.LEAF_OFFSET_ANGLE_MIN = Math.PI * 0.25;
+Models.LEAF_OFFSET_ANGLE_MAX = Math.PI * 0.45;
 Models.LEAF_GROW_TIME_MIN = 5;
 Models.LEAF_GROW_TIME_MAX = 12;
 Models.LEAF_STALK_COLORS = [
     "#779454"
 ];
 Models.LEAF_COLORS = [
-    "#a7d65b",
+    "#8ab753",
     "#a5d369"
 ];
 
