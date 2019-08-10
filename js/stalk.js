@@ -43,11 +43,16 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
     };
 
     const makeLeaf = (direction) => {
+        const dx = points[points.length - 2].x - points[points.length - 3].x;
+        const dy = points[points.length - 2].y - points[points.length - 3].y;
+        const f = Math.random();
+        const angle = Math.atan2(dy, dx);
+
         const newLeaf = new Leaf(
             model.getLeafModel(),
-            points[points.length - 2].x,
-            points[points.length - 2].y,
-            direction);
+            points[points.length - 3].x + dx * f,
+            points[points.length - 3].y + dy * f,
+            angle + (direction - angle) * f);
 
         leaves.push(newLeaf);
     };

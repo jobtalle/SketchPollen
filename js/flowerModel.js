@@ -3,7 +3,10 @@ const FlowerModel = function(
     power,
     width,
     petalCount,
-    petalLength
+    petalLength,
+    pistilCount,
+    growTime,
+    wiggleSpeed
 ) {
     this.getPetalWidths = () => {
         const widths = [];
@@ -34,7 +37,7 @@ const FlowerModel = function(
     };
 
     this.getPistilCount = () => {
-        return 24;
+        return pistilCount;
     };
 
     this.getPistilAngles = pistilCount => {
@@ -56,19 +59,20 @@ const FlowerModel = function(
     };
 
     this.getGrowTime = () => {
-        return 5;
+        return growTime;
     };
 
     this.getWiggleSpeed = () => {
-        return 2;
+        return wiggleSpeed;
     };
 
     this.getWiggleAmplitude = () => {
-        return 0.35;
+        return FlowerModel.WIGGLE_AMPLITUDE;
     };
 
     petalCount = Math.floor(petalCount / petalColors.length) * petalColors.length;
 };
 
 FlowerModel.PETAL_PRECISION = 8;
-FlowerModel.PISTIL_FACTOR = 0.7;
+FlowerModel.PISTIL_FACTOR = 0.5;
+FlowerModel.WIGGLE_AMPLITUDE = 0.35;
