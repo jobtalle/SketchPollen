@@ -59,4 +59,4 @@ const BodySegment = function(x, y, radius, color, distance, child) {
 };
 
 BodySegment.DAMPING = 0.75;
-BodySegment.LEG_LENGTH_FACTOR = 1.3;
+BodySegment.LEG_LENGTH_FACTOR = 1.4;
