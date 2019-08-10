@@ -29,7 +29,11 @@ const Models = function() {
     const makeModel = () => {
         return new GrowthModel(
             makeFlowerModel(),
-            makeLeafModel());
+            makeLeafModel(),
+            Models.DISTRIBUTION_FUNCTIONS_BRANCHING[Math.floor(Math.random() * Models.DISTRIBUTION_FUNCTIONS_BRANCHING.length)],
+            Models.BRANCH_CHANCE_MIN + (Models.BRANCH_CHANCE_MAX - Models.BRANCH_CHANCE_MIN) * Math.random(),
+            Models.DISTRIBUTION_FUNCTIONS_LEAVES[Math.floor(Math.random() * Models.DISTRIBUTION_FUNCTIONS_LEAVES.length)],
+            Models.LEAF_CHANCE_MIN + (Models.LEAF_CHANCE_MAX - Models.LEAF_CHANCE_MIN) * Math.random());
     };
 
     this.get = () => {
@@ -55,22 +59,34 @@ Models.SINGLETON_CHANCE = 0.03;
 Models.NEW_INTERVAL_MIN = 6;
 Models.NEW_INTERVAL_MAX = 10;
 
-Models.LEAF_RADIUS_MIN = 8;
+Models.DIST_FUNCTION_COS_INCREASE = new Function("x", "return Math.cos(x * Math.PI) * -0.5 + 0.5");
+Models.DIST_FUNCTION_COS_DECREASE = new Function("x", "return Math.cos(x * Math.PI) * 0.5 + 0.5");
+
+Models.BRANCH_CHANCE_MIN = 0.3;
+Models.BRANCH_CHANCE_MAX = 1;
+Models.DISTRIBUTION_FUNCTIONS_BRANCHING = [
+    Models.DIST_FUNCTION_COS_INCREASE,
+    Models.DIST_FUNCTION_COS_DECREASE
+];
+Models.LEAF_CHANCE_MIN = 0.7;
+Models.LEAF_CHANCE_MAX = 1;
+Models.DISTRIBUTION_FUNCTIONS_LEAVES = [
+    Models.DIST_FUNCTION_COS_DECREASE
+];
+
+Models.LEAF_RADIUS_MIN = 6;
 Models.LEAF_RADIUS_MAX = 16;
 Models.LEAF_LENGTH_MIN = 50;
 Models.LEAF_LENGTH_MAX = 90;
 Models.LEAF_OFFSET_ANGLE_MIN = Math.PI * 0.1;
-Models.LEAF_OFFSET_ANGLE_MAX = Math.PI * 0.5;
+Models.LEAF_OFFSET_ANGLE_MAX = Math.PI * 0.4;
 Models.LEAF_GROW_TIME_MIN = 5;
 Models.LEAF_GROW_TIME_MAX = 12;
 Models.LEAF_STALK_COLORS = [
-    "#76ae4d",
-    "#749854",
     "#779454"
 ];
 Models.LEAF_COLORS = [
     "#a7d65b",
-    "#bbd659",
     "#a5d369"
 ];
 
@@ -83,7 +99,7 @@ Models.FLOWER_PETALS_MAX = 22;
 Models.FLOWER_LENGTH_MIN = 50;
 Models.FLOWER_LENGTH_MAX = 100;
 Models.FLOWER_PISTIL_COUNT_MIN = 6;
-Models.FLOWER_PISTIL_COUNT_MAX = 30;
+Models.FLOWER_PISTIL_COUNT_MAX = 36;
 Models.FLOWER_GROW_TIME_MIN = 5;
 Models.FLOWER_GROW_TIME_MAX = 10;
 Models.FLOWER_WIGGLE_SPEED_MIN = 1.5;

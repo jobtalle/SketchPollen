@@ -18,7 +18,7 @@ const Leaf = function(model, x, y, direction) {
     this.draw = (context) => {
         context.save();
         context.translate(x, y);
-        context.rotate(direction + angle + offsetAngle);
+        context.rotate(direction + angle + offsetAngle * scale);
         context.scale(scale, scale);
 
         context.beginPath();

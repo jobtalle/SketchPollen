@@ -37,5 +37,5 @@ const Poll = function() {
 
 Poll.RADIUS_MIN = 4;
 Poll.RADIUS_MAX = 6;
-Poll.GROW_TIME = 8;
+Poll.GROW_TIME = 12;
 Poll.COLOR = "rgba(255,238,235,0.84)";
