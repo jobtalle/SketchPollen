@@ -98,6 +98,3 @@ resize();
 requestAnimationFrame(loopFunction);
 
 spawnPlant(true);
-
-for (let i = 0; i < 2500; ++i)
-    update(1 / 60);
