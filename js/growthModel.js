@@ -4,12 +4,11 @@ const GrowthModel = function(
     branchChanceFunction,
     branchChanceMultiplier,
     leafChanceFunction,
-    leafChanceMultiplier
+    leafChanceMultiplier,
+    branchLengthScale,
+    noiseScale,
+    flexibility
 ) {
-    const getFactor = (length, maxLength) => {
-        return length / maxLength;
-    };
-
     this.getBranchChance = factor => {
         return branchChanceFunction(factor) * branchChanceMultiplier;
     };
@@ -19,11 +18,11 @@ const GrowthModel = function(
     };
 
     this.getBranchLengthScale = () => {
-        return 0.7;
+        return branchLengthScale;
     };
 
     this.getNoiseScale = () => {
-        return 0.012;
+        return noiseScale;
     };
 
     this.makePhytomerLength = maxLength => {
@@ -35,7 +34,7 @@ const GrowthModel = function(
     };
 
     this.getFlexibility = () => {
-        return 0.05;
+        return flexibility;
     };
 
     this.getFlowerModel = () => {

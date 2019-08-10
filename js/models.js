@@ -33,7 +33,10 @@ const Models = function() {
             Models.DISTRIBUTION_FUNCTIONS_BRANCHING[Math.floor(Math.random() * Models.DISTRIBUTION_FUNCTIONS_BRANCHING.length)],
             Models.BRANCH_CHANCE_MIN + (Models.BRANCH_CHANCE_MAX - Models.BRANCH_CHANCE_MIN) * Math.random(),
             Models.DISTRIBUTION_FUNCTIONS_LEAVES[Math.floor(Math.random() * Models.DISTRIBUTION_FUNCTIONS_LEAVES.length)],
-            Models.LEAF_CHANCE_MIN + (Models.LEAF_CHANCE_MAX - Models.LEAF_CHANCE_MIN) * Math.random());
+            Models.LEAF_CHANCE_MIN + (Models.LEAF_CHANCE_MAX - Models.LEAF_CHANCE_MIN) * Math.random(),
+            Models.BRANCH_LENGTH_SCALE_MIN + (Models.BRANCH_LENGTH_SCALE_MAX - Models.BRANCH_LENGTH_SCALE_MIN) * Math.random(),
+            Models.NOISE_SCALE_MIN + (Models.NOISE_SCALE_MAX - Models.NOISE_SCALE_MIN) * Math.random(),
+            Models.FLEXIBILITY_MIN + (Models.FLEXIBILITY_MAX - Models.FLEXIBILITY_MIN) * Math.random());
     };
 
     this.get = () => {
@@ -65,6 +68,12 @@ Models.DIST_FUNCTION_COS_FIRST_HALF = new Function("x", "return Math.cos(Math.mi
 
 Models.BRANCH_CHANCE_MIN = 0;
 Models.BRANCH_CHANCE_MAX = 0.4;
+Models.BRANCH_LENGTH_SCALE_MIN = 0.3;
+Models.BRANCH_LENGTH_SCALE_MAX = 0.9;
+Models.NOISE_SCALE_MIN = 0.006;
+Models.NOISE_SCALE_MAX = 0.02;
+Models.FLEXIBILITY_MIN = 0.03;
+Models.FLEXIBILITY_MAX = 0.06;
 Models.DISTRIBUTION_FUNCTIONS_BRANCHING = [
     Models.DIST_FUNCTION_COS_INCREASE,
     Models.DIST_FUNCTION_COS_DECREASE,
@@ -110,5 +119,6 @@ Models.FLOWER_PALETTES = [
     ["#c0a7da", "#9c7fc0"],
     ["#dad68b", "#b4b074"],
     ["#da6c6f", "#a65354"],
-    ["#66d0da", "#57b0bb"]
+    ["#66d0da", "#57b0bb"],
+    ["#6595cb", "#4f769d"]
 ];

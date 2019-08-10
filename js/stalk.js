@@ -117,7 +117,7 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
             rights.push(new Coordinate(0, 0));
 
             if (Math.random() < model.getBranchChance(factor))
-                if (maxLength > Stalk.RESOLUTION)
+                if (maxLength * model.getBranchLengthScale() > Stalk.RESOLUTION)
                     branch(phytomers, maxLength, direction);
 
             if (Math.random() < model.getLeafChance(factor))
