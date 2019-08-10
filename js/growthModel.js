@@ -10,12 +10,12 @@ const GrowthModel = function(
         return length / maxLength;
     };
 
-    this.getBranchChance = (length, maxLength) => {
-        return branchChanceFunction(getFactor(length, maxLength)) * branchChanceMultiplier;
+    this.getBranchChance = factor => {
+        return branchChanceFunction(factor) * branchChanceMultiplier;
     };
 
-    this.getLeafChance = (length, maxLength) => {
-        return leafChanceFunction(getFactor(length, maxLength)) * leafChanceMultiplier;
+    this.getLeafChance = factor => {
+        return leafChanceFunction(factor) * leafChanceMultiplier;
     };
 
     this.getBranchLengthScale = () => {

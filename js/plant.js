@@ -1,7 +1,7 @@
 const Plant = function(model, x, floor, ceiling) {
     const growthSpeed = Plant.GROWTH_SPEED_MIN + (Plant.GROWTH_SPEED_MAX - Plant.GROWTH_SPEED_MIN) * Math.random();
     const stalk = new Stalk(model, 0, 0, 0, 1, true);
-    const phytomers = [new Phytomer(model, stalk, floor - ceiling, null)];
+    const phytomers = [new Phytomer(model, stalk, floor - ceiling, 0, null)];
     const flowers = [];
     const transform = new Transform();
     let originalFloor = floor;

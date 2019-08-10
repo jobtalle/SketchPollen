@@ -27,6 +27,7 @@ const Phytomer = function(model, stalk, maxLength, directionOffset) {
             x,
             y,
             maxLength - length,
+            length / maxLength,
             direction + directionOffset,
             phytomers);
 

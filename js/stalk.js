@@ -94,7 +94,7 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
         flowers.push(flower);
     };
 
-    this.extrude = (x, y, maxLength, direction, phytomers) => {
+    this.extrude = (x, y, maxLength, factor, direction, phytomers) => {
         x -= xRoot;
         y -= yRoot;
 
@@ -116,11 +116,11 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
             lefts.push(new Coordinate(0, 0));
             rights.push(new Coordinate(0, 0));
 
-            if (Math.random() < model.getBranchChance((points.length - 1) * Stalk.RESOLUTION, maxLength))
+            if (Math.random() < model.getBranchChance(factor))
                 if (maxLength > Stalk.RESOLUTION)
                     branch(phytomers, maxLength, direction);
 
-            if (Math.random() < model.getLeafChance((points.length - 1) * Stalk.RESOLUTION, maxLength))
+            if (Math.random() < model.getLeafChance(factor))
                 makeLeaf(direction);
         }
 
