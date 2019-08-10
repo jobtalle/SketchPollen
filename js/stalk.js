@@ -166,6 +166,7 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
 
         context.closePath();
         context.fill();
+        context.fillStyle = model.getLeafModel().getColor();
 
         for (const leaf of leaves)
             leaf.draw(context);

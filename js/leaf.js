@@ -21,7 +21,6 @@ const Leaf = function(model, x, y, direction) {
         context.rotate(direction + angle + offsetAngle);
         context.scale(scale, scale);
 
-        context.fillStyle = Leaf.COLOR;
         context.beginPath();
         context.moveTo(0, 0);
 
@@ -40,5 +39,4 @@ const Leaf = function(model, x, y, direction) {
 
 Leaf.NOISE_SCALE = 2;
 Leaf.WIGGLE_AMPLITUDE = 0.5;
-Leaf.COLOR = "rgb(174,223,95)";
 Leaf.PRECISION = 8;

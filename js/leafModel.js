@@ -26,4 +26,12 @@ const LeafModel = function() {
     this.getGrowTime = () => {
         return 7;
     };
+
+    this.getStalkColor = () => {
+        return "#76ae4d";
+    };
+
+    this.getColor = () => {
+        return "rgb(174,223,95)";
+    };
 };
