@@ -67,7 +67,7 @@ Models.DIST_FUNCTION_COS_DECREASE = new Function("x", "return Math.cos(x * Math.
 Models.DIST_FUNCTION_COS_FIRST_HALF = new Function("x", "return Math.cos(Math.min(x * Math.PI * 2, Math.PI)) * 0.5 + 0.5;");
 
 Models.BRANCH_CHANCE_MIN = 0;
-Models.BRANCH_CHANCE_MAX = 0.4;
+Models.BRANCH_CHANCE_MAX = 0.2;
 Models.BRANCH_LENGTH_SCALE_MIN = 0.3;
 Models.BRANCH_LENGTH_SCALE_MAX = 0.9;
 Models.NOISE_SCALE_MIN = 0.006;
