@@ -1,7 +1,4 @@
 const Wings = function() {
-    const radius = 70;
-    const size = 2;
-    const wingAngles = [-1.1, -1.3, -1.5, -1.3];
     let wingAngleIndex = 0;
 
     const drawWing = context => {
@@ -10,8 +7,8 @@ const Wings = function() {
 
         for (let i = 1; i < Wings.PRECISION; ++i) {
             const f = i / (Wings.PRECISION + 1);
-            const r = (Math.cos((f + 0.5) * Math.PI * 2) * 0.5 + 0.5) * radius;
-            const a = f * size;
+            const r = (Math.cos((f + 0.5) * Math.PI * 2) * 0.5 + 0.5) * Wings.RADIUS;
+            const a = f * Wings.SIZE;
 
             context.lineTo(
                 Math.cos(a) * r,
@@ -25,7 +22,7 @@ const Wings = function() {
     this.draw = (context, x, y, vx) => {
         const motionAngle = vx * Wings.SIDE_ANGLE;
 
-        if (++wingAngleIndex === wingAngles.length)
+        if (++wingAngleIndex === Wings.ANGLES.length)
             wingAngleIndex = 0;
 
         context.save();
@@ -34,14 +31,14 @@ const Wings = function() {
         context.fillStyle = "rgba(246,246,246,0.5)";
 
         context.save();
-        context.rotate(wingAngles[wingAngleIndex] + Math.min(0, motionAngle));
+        context.rotate(Wings.ANGLES[wingAngleIndex] + Math.min(0, motionAngle));
 
         drawWing(context);
 
         context.restore();
         context.scale(-1, 1);
         context.save();
-        context.rotate(wingAngles[wingAngleIndex] - Math.max(0, motionAngle));
+        context.rotate(Wings.ANGLES[wingAngleIndex] - Math.max(0, motionAngle));
 
         drawWing(context);
 
@@ -50,5 +47,8 @@ const Wings = function() {
     };
 };
 
+Wings.ANGLES = [-1.1, -1.3, -1.5, -1.3];
+Wings.RADIUS = 80;
+Wings.SIZE = 2;
 Wings.PRECISION = 10;
 Wings.SIDE_ANGLE = 0.006;

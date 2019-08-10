@@ -61,6 +61,8 @@ const Hand = function(x, y, length, sign, color) {
             handY = y + Hand.DOWN_OFFSET;
     };
 
+    this.getX = () => x;
+
     this.addSlot = s => {
         slots.push(s);
     };
@@ -134,7 +136,7 @@ const Hand = function(x, y, length, sign, color) {
         context.lineWidth = Hand.ARM_THICKNESS;
 
         context.beginPath();
-        context.moveTo(x, y);
+        context.moveTo(x + sign * Hand.ARM_THICKNESS * 0.5, y);
         context.lineTo(elbowX, elbowY);
         context.lineTo(handX, handY);
         context.stroke();
@@ -154,8 +156,8 @@ Hand.ARM_THICKNESS = 3;
 Hand.RADIUS = 2;
 Hand.DOWN_SPEED = 50;
 Hand.DOWN_OFFSET = 8;
-Hand.REACH_SPEED = 140;
+Hand.REACH_SPEED = 110;
 Hand.STORE_SPEED = 70;
 Hand.GRAB_THRESHOLD = 1;
-Hand.DAMPING = 0.85;
+Hand.DAMPING = 0.75;
 Hand.MAX_EXTENSION = 0.95;

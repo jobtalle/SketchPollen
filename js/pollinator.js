@@ -58,24 +58,26 @@ const Pollinator = function(x, y) {
     };
 
     const makeSlots = () => {
-        const slotCount = 8;
         const angleOffset = Math.atan(Hand.DOWN_OFFSET / Pollinator.RADII[0]);
 
-        for (let i = 0; i < slotCount; ++i) {
-            const angle = Math.PI + (i / (slotCount - 1)) * (Math.PI - 2 * angleOffset) + angleOffset;
-
-            slots.push(new Slot(
+        for (let i = 0; i < Pollinator.CARRY_CAPACITY; ++i) {
+            const angle = Math.PI + (i / (Pollinator.CARRY_CAPACITY - 1)) * (Math.PI - 2 * angleOffset) + angleOffset;
+            const newSlot = new Slot(
                 x,
                 y,
                 Math.cos(angle) * Pollinator.RADII[0],
-                -Math.sin(angle) * Pollinator.RADII[0]));
+                -Math.sin(angle) * Pollinator.RADII[0]);
+
+            slots.push(newSlot);
+
+            const toLeft = Math.abs(newSlot.getX() - handLeft.getX());
+            const toRight = Math.abs(newSlot.getX() - handRight.getX());
+
+            if (toLeft < toRight)
+                handLeft.addSlot(newSlot);
+            else
+                handRight.addSlot(newSlot);
         }
-
-        for (let i = 0; i < 4; ++i)
-            handLeft.addSlot(slots[i]);
-
-        for (let i = 4; i < 8; ++i)
-            handRight.addSlot(slots[i]);
     };
 
     const pickTarget = plants => {
@@ -208,8 +210,9 @@ const Pollinator = function(x, y) {
     makeSlots();
 };
 
+Pollinator.CARRY_CAPACITY = 8;
 Pollinator.ARM_LENGTH = 55;
-Pollinator.RADII = [20, 22, 18, 12];
+Pollinator.RADII = [22, 22, 18, 12];
 Pollinator.BODY_FOLLOW_DIST = 0.5;
 Pollinator.EYE_SPACING = 8;
 Pollinator.WINGS_INSET = 0.7;

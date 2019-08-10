@@ -1,4 +1,16 @@
 const BodySegment = function(x, y, radius, color, distance, child) {
+    const handLeft = color === Pollinator.BODY_COLOR_B ? new Hand(
+        x - radius,
+        y,
+        radius * BodySegment.LEG_LENGTH_FACTOR,
+        1,
+        color) : null;
+    const handRight = color === Pollinator.BODY_COLOR_B ? new Hand(
+        x + radius,
+        y,
+        radius * BodySegment.LEG_LENGTH_FACTOR,
+        -1,
+        color) : null;
     let xp = x;
     let yp = y;
 
@@ -23,6 +35,11 @@ const BodySegment = function(x, y, radius, color, distance, child) {
 
         if (child)
             child.update(timeStep, x, y);
+
+        if (handLeft) {
+            handLeft.update(timeStep, x - radius, y, null);
+            handRight.update(timeStep, x + radius, y, null);
+        }
     };
 
     this.draw = context => {
@@ -33,7 +50,13 @@ const BodySegment = function(x, y, radius, color, distance, child) {
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.fill();
+
+        if (handLeft) {
+            handLeft.draw(context);
+            handRight.draw(context);
+        }
     };
 };
 
 BodySegment.DAMPING = 0.75;
+BodySegment.LEG_LENGTH_FACTOR = 1.3;
