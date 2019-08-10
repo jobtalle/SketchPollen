@@ -1,9 +1,16 @@
 const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
+    const Coordinate = function(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+
     const transform = new Transform();
     const windNoise = cubicNoiseConfig(Math.random());
     const flexibility = model.getFlexibility();
     const children = [];
     const leaves = [];
+    const lefts = [new Coordinate(0, 0)];
+    const rights = [new Coordinate(0, 0)];
     let angle;
     let flower = null;
     let xTip, yTip;
@@ -60,6 +67,21 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
             flower.setPosition(xTip, yTip);
     };
 
+    const updatePoints = () => {
+        const dxTip = points[points.length - 1].x - points[points.length - 2].x;
+        const dyTip = points[points.length - 1].y - points[points.length - 2].y;
+        const tipLength = Math.sqrt(dxTip * dxTip + dyTip * dyTip);
+
+        for (let i = 0; i < points.length - 1; ++i) {
+            const radius = model.sampleRadius(tipLength + (points.length - 2 - i) * Stalk.RESOLUTION);
+
+            lefts[i].x = points[i].x - points[i].nx * radius;
+            lefts[i].y = points[i].y - points[i].ny * radius;
+            rights[i].x = points[i].x + points[i].nx * radius;
+            rights[i].y = points[i].y + points[i].ny * radius;
+        }
+    };
+
     this.getX = () => xRoot;
     this.getY = () => yRoot;
 
@@ -91,6 +113,8 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
             points[points.length - 1].ny = Math.sin(normalDirection);
 
             points.push(new Point(x, y));
+            lefts.push(new Coordinate(0, 0));
+            rights.push(new Coordinate(0, 0));
 
             if (Math.random() < model.getBranchChance((points.length - 1) * Stalk.RESOLUTION, maxLength)) {
                 if (maxLength > Stalk.RESOLUTION)
@@ -99,6 +123,8 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
             else if (Math.random() < model.getLeafChance((points.length - 1) * Stalk.RESOLUTION, maxLength))
                 makeLeaf(direction);
         }
+
+        updatePoints();
     };
 
     this.update = (timeStep, lifetime) => {
@@ -129,29 +155,14 @@ const Stalk = function(model, xRoot, yRoot, direction, nChild, isRoot) {
         for (const child of children)
             child.draw(context, t);
 
-        const dxTip = points[points.length - 1].x - points[points.length - 2].x;
-        const dyTip = points[points.length - 1].y - points[points.length - 2].y;
-        const tipLength = Math.sqrt(dxTip * dxTip + dyTip * dyTip);
-        let radius;
-
         context.beginPath();
         context.moveTo(points[points.length - 1].x, points[points.length - 1].y);
 
-        for (let i = points.length - 1; i-- > 0;) {
-            radius = model.sampleRadius(tipLength + (points.length - 2 - i) * Stalk.RESOLUTION);
+        for (let i = points.length - 1; i-- > 0;)
+            context.lineTo(lefts[i].x, lefts[i].y);
 
-            context.lineTo(
-                points[i].x - points[i].nx * radius,
-                points[i].y - points[i].ny * radius);
-        }
-
-        for (let i = 0; i < points.length - 1; ++i) {
-            radius = model.sampleRadius(tipLength + (points.length - 2 - i) * Stalk.RESOLUTION);
-
-            context.lineTo(
-                points[i].x + points[i].nx * radius,
-                points[i].y + points[i].ny * radius);
-        }
+        for (let i = 0; i < points.length - 1; ++i)
+            context.lineTo(rights[i].x, rights[i].y);
 
         context.closePath();
         context.fill();
