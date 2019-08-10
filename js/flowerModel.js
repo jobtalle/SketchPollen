@@ -1,6 +1,6 @@
 const FlowerModel = function() {
     const petalCount = 12;
-    const petalLength = 140;
+    const petalLength = 80;
     const petalColors = [
         "#c0a7da",
         "#9c7fc0"];
@@ -9,7 +9,7 @@ const FlowerModel = function() {
         const petalWidth = 10;
         const widths = [];
 
-        for (let i = 0; i < FlowerModel.PETAL_PRECISION; ++i) {
+        for (let i = 1; i < FlowerModel.PETAL_PRECISION - 1; ++i) {
             const x = 2 * (i / (FlowerModel.PETAL_PRECISION - 1)) - 1;
 
             widths.push((1 - x * x) * petalWidth);

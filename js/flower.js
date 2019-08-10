@@ -21,25 +21,34 @@ const Flower = function(model, x, y, direction) {
     };
 
     const drawPetals = context => {
+        const angleStep = (Math.PI * 2) / petalCount;
+
         context.save();
         context.scale(grown, grown);
 
-        for (let i = 0; i < petalCount; ++i) {
-            context.fillStyle = petalColors[i % petalColors.length];
+        for (let colorIndex = 0; colorIndex < petalColors.length; ++colorIndex) {
+            let i = colorIndex;
 
-            context.beginPath();
-            context.moveTo(0, 0);
+            context.fillStyle = petalColors[colorIndex];
+            context.rotate(angleStep);
 
-            for (let i = 1; i <  petalWidths.length; ++i)
-                context.lineTo((i / (petalCount - 1)) * petalLength, -petalWidths[i]);
+            for (;i < petalCount; i += petalColors.length) {
+                context.beginPath();
+                context.moveTo(0, 0);
 
-            for (let i =  petalWidths.length; i-- > 1;)
-                context.lineTo((i / (petalCount - 1)) * petalLength, petalWidths[i]);
+                for (let i = 1; i < FlowerModel.PETAL_PRECISION - 1; ++i)
+                    context.lineTo((i / (FlowerModel.PETAL_PRECISION - 1)) * petalLength, -petalWidths[i - 1]);
 
-            context.closePath();
-            context.fill();
+                context.lineTo(petalLength, 0);
 
-            context.rotate((Math.PI * 2) / petalCount);
+                for (let i = FlowerModel.PETAL_PRECISION - 1; i-- > 1;)
+                    context.lineTo((i / (FlowerModel.PETAL_PRECISION - 1)) * petalLength, petalWidths[i - 1]);
+
+                context.closePath();
+                context.fill();
+
+                context.rotate(angleStep * petalColors.length);
+            }
         }
 
         context.restore();
