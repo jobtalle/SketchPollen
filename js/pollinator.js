@@ -31,13 +31,10 @@ const Pollinator = function(x, y) {
     const noisey = cubicNoiseConfig(Math.random());
     const wings = new Wings();
     const eye = new Eye();
-    const armLength = 70;
-    const handSpacing = 25;
-    const handLeft = new Hand(x - handSpacing, y, armLength, 1, Pollinator.BODY_COLOR_A);
-    const handRight = new Hand(x + handSpacing, y, armLength, -1, Pollinator.BODY_COLOR_A);
-    const body = new BodySegment(x, y, 22, Pollinator.BODY_COLOR_B, 5,
-        new BodySegment(x, y, 18, Pollinator.BODY_COLOR_A, 15, null));
+    const handLeft = new Hand(x - Pollinator.RADII[0], y, Pollinator.ARM_LENGTH, 1, Pollinator.BODY_COLOR_B);
+    const handRight = new Hand(x + Pollinator.RADII[0], y, Pollinator.ARM_LENGTH, -1, Pollinator.BODY_COLOR_B);
     const slots = [];
+    let body = null;
     let lifetime = 0;
     let target = null;
     let updateTimer = 0;
@@ -45,17 +42,33 @@ const Pollinator = function(x, y) {
     let vy = 0;
     let leave = false;
 
+    const makeBody = () => {
+        let lastSegment = null;
+
+        for (let i = Pollinator.RADII.length; i-- > 1;)
+            lastSegment = new BodySegment(
+                x,
+                y,
+                Pollinator.RADII[i],
+                (i & 1) === 1 ? Pollinator.BODY_COLOR_B : Pollinator.BODY_COLOR_A,
+                Pollinator.RADII[i - 1] * Pollinator.BODY_FOLLOW_DIST,
+                lastSegment);
+
+        body = lastSegment;
+    };
+
     const makeSlots = () => {
         const slotCount = 8;
-        const radius = 20;
+        const angleOffset = Math.atan(Hand.DOWN_OFFSET / Pollinator.RADII[0]);
 
         for (let i = 0; i < slotCount; ++i) {
-            const angle = Math.PI + (i / (slotCount - 1)) * Math.PI;
+            const angle = Math.PI + (i / (slotCount - 1)) * (Math.PI - 2 * angleOffset) + angleOffset;
+
             slots.push(new Slot(
                 x,
                 y,
-                Math.cos(angle) * radius,
-                -Math.sin(angle) * radius + Hand.DOWN_OFFSET));
+                Math.cos(angle) * Pollinator.RADII[0],
+                -Math.sin(angle) * Pollinator.RADII[0]));
         }
 
         for (let i = 0; i < 4; ++i)
@@ -106,7 +119,7 @@ const Pollinator = function(x, y) {
         const xOffset = (cubicNoiseSample1(noisex, lifetime * Pollinator.NOISE_SPEED) - 0.5) * 2 * target.getRadius();
         const yOffset = (cubicNoiseSample1(noisey, lifetime * Pollinator.NOISE_SPEED) - 0.5) * 2 * target.getRadius();
         const dx = target.getX() + xOffset * Pollinator.HOVER_REGION_SCALE - x;
-        const dy = target.getY() + yOffset * Pollinator.HOVER_REGION_SCALE - y - (armLength + Hand.DOWN_OFFSET) * 0.5;
+        const dy = target.getY() + yOffset * Pollinator.HOVER_REGION_SCALE - y - (Pollinator.ARM_LENGTH * Hand.MAX_EXTENSION - Hand.DOWN_OFFSET) * 0.5;
 
         if (dx > 0)
             vx += Pollinator.ACCELERATION_X * timeStep;
@@ -134,7 +147,7 @@ const Pollinator = function(x, y) {
         vx -= vx * Pollinator.DAMPING * timeStep;
         vy -= vy * Pollinator.DAMPING * timeStep;
 
-        body.move(x, y);
+        body.update(timeStep, x, y);
 
         let pollCount = 0;
 
@@ -153,8 +166,8 @@ const Pollinator = function(x, y) {
             leave = true;
         }
 
-        handLeft.update(timeStep, x - handSpacing, y, target);
-        handRight.update(timeStep, x + handSpacing, y, target);
+        handLeft.update(timeStep, x - Pollinator.RADII[0], y, target);
+        handRight.update(timeStep, x + Pollinator.RADII[0], y, target);
 
         if (leave) {
             vy -= Pollinator.ACCELERATION_Y * timeStep;
@@ -174,30 +187,32 @@ const Pollinator = function(x, y) {
     this.draw = context => {
         body.draw(context);
 
-        wings.draw(context, x, y, vx);
+        wings.draw(context, body.getX(), body.getY() - body.getRadius() * Pollinator.WINGS_INSET, vx);
 
         for (const slot of slots)
             slot.draw(context);
 
-        context.fillStyle = Pollinator.BODY_COLOR_A;
-        context.beginPath();
-        context.moveTo(x - handSpacing, y);
-        context.lineTo(x, y - 8);
-        context.lineTo(x + handSpacing, y);
-        context.arc(x, y + Hand.DOWN_OFFSET, handSpacing - Pollinator.BELLY_INSET, 0, Math.PI);
-        context.closePath();
-        context.fill();
-
-        eye.draw(context, x - 8, y + Hand.DOWN_OFFSET, lifetime);
-        eye.draw(context, x + 8, y + Hand.DOWN_OFFSET, lifetime);
-
         handLeft.draw(context);
         handRight.draw(context);
+
+        context.fillStyle = Pollinator.BODY_COLOR_A;
+        context.beginPath();
+        context.arc(x, y, Pollinator.RADII[0], 0, Math.PI * 2);
+        context.fill();
+
+        eye.draw(context, x - Pollinator.EYE_SPACING, y, lifetime);
+        eye.draw(context, x + Pollinator.EYE_SPACING, y, lifetime);
     };
 
+    makeBody();
     makeSlots();
 };
 
+Pollinator.ARM_LENGTH = 55;
+Pollinator.RADII = [20, 22, 18, 12];
+Pollinator.BODY_FOLLOW_DIST = 0.5;
+Pollinator.EYE_SPACING = 8;
+Pollinator.WINGS_INSET = 0.7;
 Pollinator.UPDATE_TIME_MIN = 10;
 Pollinator.UPDATE_TIME_MAX = 18;
 Pollinator.ACCELERATION_X = 280;
@@ -209,6 +224,5 @@ Pollinator.DAMPING = 0.5;
 Pollinator.DESPAWN_CLEARING = 200;
 Pollinator.NOISE_SPEED = 0.4;
 Pollinator.HOVER_REGION_SCALE = 2;
-Pollinator.BELLY_INSET = 6;
 Pollinator.BODY_COLOR_A = "rgb(228,196,25)";
 Pollinator.BODY_COLOR_B = "rgb(97,81,28)";

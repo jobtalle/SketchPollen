@@ -131,7 +131,7 @@ const Hand = function(x, y, length, sign, color) {
         const elbowY = y + Math.sin(handDirection + elbowAngle) * length * 0.5;
 
         context.strokeStyle = color;
-        context.lineWidth = 3;
+        context.lineWidth = Hand.ARM_THICKNESS;
 
         context.beginPath();
         context.moveTo(x, y);
@@ -150,11 +150,12 @@ const Hand = function(x, y, length, sign, color) {
     };
 };
 
-Hand.RADIUS = 3;
+Hand.ARM_THICKNESS = 3;
+Hand.RADIUS = 2;
 Hand.DOWN_SPEED = 50;
-Hand.DOWN_OFFSET = 12;
-Hand.REACH_SPEED = 100;
+Hand.DOWN_OFFSET = 8;
+Hand.REACH_SPEED = 140;
 Hand.STORE_SPEED = 70;
 Hand.GRAB_THRESHOLD = 1;
-Hand.DAMPING = 0.75;
-Hand.MAX_EXTENSION = 0.9;
+Hand.DAMPING = 0.85;
+Hand.MAX_EXTENSION = 0.95;
