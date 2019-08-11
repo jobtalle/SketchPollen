@@ -154,7 +154,7 @@ const Hand = function(x, y, length, sign, color) {
 
 Hand.ARM_THICKNESS = 3;
 Hand.RADIUS = 2;
-Hand.DOWN_SPEED = 50;
+Hand.DOWN_SPEED = 60;
 Hand.DOWN_OFFSET = 8;
 Hand.REACH_SPEED = 110;
 Hand.STORE_SPEED = 70;

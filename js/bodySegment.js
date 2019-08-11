@@ -33,13 +33,13 @@ const BodySegment = function(x, y, radius, color, distance, child) {
             y += (dy / dist) * (dist - distance);
         }
 
-        if (child)
-            child.update(timeStep, x, y);
-
         if (handLeft) {
             handLeft.update(timeStep, x - radius, y, null);
             handRight.update(timeStep, x + radius, y, null);
         }
+
+        if (child)
+            child.update(timeStep, x, y);
     };
 
     this.draw = context => {
@@ -59,4 +59,4 @@ const BodySegment = function(x, y, radius, color, distance, child) {
 };
 
 BodySegment.DAMPING = 0.75;
-BodySegment.LEG_LENGTH_FACTOR = 1.4;
+BodySegment.LEG_LENGTH_FACTOR = 1.3;
